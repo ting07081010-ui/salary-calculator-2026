@@ -1,23 +1,35 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useContext } from 'react';
 import {
-    BOSS_CONFIG,
-    TUITION_FEES,
-    DEFAULT_OPS_COSTS,
     DEFAULT_BOSS_CLASS,
-    FULL_TIME_CONFIG,
-    PT_CONFIG,
-    FREQUENCY_OPTIONS,
     TEACHER_TYPES
 } from '../config/bossConfig';
 import { generateId } from '../utils/formatters';
+import SettingsContext, { DEFAULT_SETTINGS } from '../context/SettingsContext';
 
 /**
  * Boss 損益計算 Hook
  * 使用與薪資試算 2026 一致的計算邏輯
+ * 支援從 SettingsContext 讀取動態參數
  */
 export const useBossCalculator = () => {
+    // 嘗試從 Context 讀取設定，若無則使用預設值
+    const settingsContext = useContext(SettingsContext);
+    const settings = settingsContext?.settings || DEFAULT_SETTINGS;
+
+    // 從設定中提取常數
+    const TERM_MONTHS = settings.termMonths;
+    const MAX_TEACHERS = settings.maxTeachers;
+    const GOAL_STUDENTS = settings.goalStudents;
+    const MAX_CLASSES_PER_TEACHER = settings.maxClassesPerTeacher;
+    const FULL_TIME_BASE_SALARY = settings.fullTimeBaseSalary;
+    const PT_BASE_HOURLY_RATE = settings.ptBaseHourlyRate;
+    const TUITION_FEES = settings.tuitionFees;
+    const fullTimeBonusMap = settings.fullTimeBonusMap;
+    const ptHourlyMap = settings.ptHourlyMap;
+    const frequencyMultiplier = settings.frequencyMultiplier;
+
     // --- 狀態 ---
-    const [opsCosts, setOpsCosts] = useState(DEFAULT_OPS_COSTS);
+    const [opsCosts, setOpsCosts] = useState(settings.opsCosts);
     const [teachers, setTeachers] = useState([
         {
             id: generateId(),
@@ -35,34 +47,34 @@ export const useBossCalculator = () => {
         }
     ]);
 
-    // --- 計算輔助函數（與薪資試算 2026 一致） ---
+    // --- 計算輔助函數（使用動態設定） ---
 
     /**
      * 計算正職老師獎金
-     * 使用 salaryConfig.js 的 BONUS_MAP
+     * 使用 Settings 的 fullTimeBonusMap
      */
     const calculateFullTimeBonus = useCallback((classType, studentCount) => {
-        const bonusArr = FULL_TIME_CONFIG.BONUS_MAP[classType];
+        const bonusArr = fullTimeBonusMap[classType];
         if (!bonusArr) return 0;
         const count = Math.min(studentCount, classType);
         return bonusArr[count] || 0;
-    }, []);
+    }, [fullTimeBonusMap]);
 
     /**
      * 計算 PT 老師時薪
-     * 使用 salaryConfig.js 的 HOURLY_MAP
+     * 使用 Settings 的 ptHourlyMap
      */
     const calculatePTHourlyRate = useCallback((classType, studentCount) => {
-        const hourlyArr = PT_CONFIG.HOURLY_MAP[classType];
-        if (!hourlyArr) return PT_CONFIG.BASE_HOURLY_RATE;
+        const hourlyArr = ptHourlyMap[classType];
+        if (!hourlyArr) return PT_BASE_HOURLY_RATE;
         const count = Math.min(studentCount, classType);
-        return hourlyArr[count] || PT_CONFIG.BASE_HOURLY_RATE;
-    }, []);
+        return hourlyArr[count] || PT_BASE_HOURLY_RATE;
+    }, [ptHourlyMap, PT_BASE_HOURLY_RATE]);
 
     // --- 操作方法 ---
     const addTeacher = useCallback(() => {
         setTeachers(prev => {
-            if (prev.length >= BOSS_CONFIG.MAX_TEACHERS) return prev;
+            if (prev.length >= MAX_TEACHERS) return prev;
             const letterIndex = prev.length % 26;
             return [...prev, {
                 id: generateId(),
@@ -72,7 +84,7 @@ export const useBossCalculator = () => {
                 classes: [{ id: generateId(), ...DEFAULT_BOSS_CLASS }]
             }];
         });
-    }, []);
+    }, [MAX_TEACHERS]);
 
     const removeTeacher = useCallback((teacherId) => {
         setTeachers(prev => prev.filter(t => t.id !== teacherId));
@@ -86,7 +98,7 @@ export const useBossCalculator = () => {
 
     const addClassToTeacher = useCallback((teacherId) => {
         setTeachers(prev => prev.map(t => {
-            if (t.id === teacherId && t.classes.length < BOSS_CONFIG.MAX_CLASSES_PER_TEACHER) {
+            if (t.id === teacherId && t.classes.length < MAX_CLASSES_PER_TEACHER) {
                 return {
                     ...t,
                     classes: [...t.classes, { id: generateId(), ...DEFAULT_BOSS_CLASS }]
@@ -94,7 +106,7 @@ export const useBossCalculator = () => {
             }
             return t;
         }));
-    }, []);
+    }, [MAX_CLASSES_PER_TEACHER]);
 
     const updateClass = useCallback((teacherId, classId, field, value) => {
         setTeachers(prev => prev.map(t => {
@@ -152,15 +164,15 @@ export const useBossCalculator = () => {
 
             const classList = t.classes.map(c => {
                 // 頻率係數
-                const freqMultiplier = FREQUENCY_OPTIONS[c.frequency]?.multiplier || 1.0;
-                points += freqMultiplier;
+                const freqMult = frequencyMultiplier[c.frequency] || 1.0;
+                points += freqMult;
 
                 const typeNum = Number(c.type);
                 const count = Math.min(c.count, typeNum);
 
                 // 學費計算
                 const tuition = TUITION_FEES[c.level]?.[typeNum] || 0;
-                const monthlyRev = (tuition * count * freqMultiplier) / BOSS_CONFIG.TERM_MONTHS;
+                const monthlyRev = (tuition * count * freqMult) / TERM_MONTHS;
                 tRev += monthlyRev;
                 totalStud += count;
 
@@ -171,12 +183,12 @@ export const useBossCalculator = () => {
                     // 正職：使用與薪資試算 2026 一致的獎金計算
                     if (count > 0) {
                         const rawBonus = calculateFullTimeBonus(typeNum, count);
-                        pay = rawBonus * freqMultiplier;
+                        pay = rawBonus * freqMult;
                     }
                 } else {
                     // PT：使用與薪資試算 2026 一致的時薪計算
                     hourlyRate = calculatePTHourlyRate(typeNum, count);
-                    pay = (hourlyRate * c.hours) * freqMultiplier;
+                    pay = (hourlyRate * c.hours) * freqMult;
                 }
 
                 tPay += pay;
@@ -186,15 +198,15 @@ export const useBossCalculator = () => {
                     monthlyRev,
                     pay,
                     hourlyRate,
-                    freqMultiplier,
+                    freqMultiplier: freqMult,
                     maxStudents: typeNum
                 };
             });
 
             // 計算教師總成本
             const tCost = t.teacherType === TEACHER_TYPES.FULL_TIME
-                ? FULL_TIME_CONFIG.BASE_SALARY + tPay
-                : (t.ptBasicHours * PT_CONFIG.BASE_HOURLY_RATE) + tPay;
+                ? FULL_TIME_BASE_SALARY + tPay
+                : (t.ptBasicHours * PT_BASE_HOURLY_RATE) + tPay;
 
             totalRev += tRev;
             totalSal += tCost;
@@ -218,7 +230,7 @@ export const useBossCalculator = () => {
         // 最終損益
         const net = totalRev - totalSal - totalOps;
         const margin = totalRev > 0 ? (net / totalRev) * 100 : 0;
-        const progress = (totalStud / BOSS_CONFIG.GOAL_STUDENTS) * 100;
+        const progress = (totalStud / GOAL_STUDENTS) * 100;
 
         // 策略建議
         let advice = {
@@ -261,7 +273,7 @@ export const useBossCalculator = () => {
             margin,
             advice
         };
-    }, [teachers, opsCosts, calculateFullTimeBonus, calculatePTHourlyRate]);
+    }, [teachers, opsCosts, calculateFullTimeBonus, calculatePTHourlyRate, TUITION_FEES, TERM_MONTHS, FULL_TIME_BASE_SALARY, PT_BASE_HOURLY_RATE, GOAL_STUDENTS, frequencyMultiplier]);
 
     return {
         // 狀態
@@ -286,7 +298,7 @@ export const useBossCalculator = () => {
         setOpsCosts,
 
         // 常數
-        canAddTeacher: teachers.length < BOSS_CONFIG.MAX_TEACHERS,
+        canAddTeacher: teachers.length < MAX_TEACHERS,
         teacherCount: teachers.length
     };
 };

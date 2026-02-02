@@ -1,0 +1,438 @@
+/**
+ * Admin 設定面板樣式
+ * 深色專業主題
+ */
+
+/* === Container === */
+.admin-container {
+    min-height: 100vh;
+    background-color: #0f172a;
+    color: #f1f5f9;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding-bottom: 4rem;
+}
+
+/* === Header === */
+.admin-header {
+    background: rgba(30, 41, 59, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #334155;
+    padding: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.admin-header-content {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .admin-header-content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.admin-header-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-header-icon {
+    padding: 0.75rem;
+    background: #6366f1;
+    border-radius: 1rem;
+    color: white;
+}
+
+.admin-header-title h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+}
+
+.admin-header-subtitle {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.admin-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.admin-dirty-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.admin-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.625rem 1rem;
+    background: #334155;
+    border: none;
+    border-radius: 0.75rem;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-btn:hover {
+    background: #475569;
+}
+
+.admin-btn.primary {
+    background: #4f46e5;
+}
+
+.admin-btn.primary:hover {
+    background: #6366f1;
+}
+
+.admin-btn.danger {
+    background: #991b1b;
+}
+
+.admin-btn.danger:hover {
+    background: #b91c1c;
+}
+
+/* === Main === */
+.admin-main {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* === Section === */
+.admin-section {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid #334155;
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+
+.admin-section-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.admin-section-header:hover {
+    background: rgba(51, 65, 85, 0.3);
+}
+
+.admin-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.admin-section-badge {
+    padding: 0.25rem 0.75rem;
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.admin-section-content {
+    padding: 0 1.5rem 1.5rem;
+}
+
+/* === Grid === */
+.admin-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.admin-grid.cols-2 {
+    grid-template-columns: 1fr;
+}
+
+.admin-grid.cols-3 {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+    .admin-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-grid.cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .admin-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* === Field === */
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-field label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-field input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid #334155;
+    border-radius: 0.75rem;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: border-color 0.2s;
+}
+
+.admin-field input:focus {
+    outline: none;
+    border-color: #6366f1;
+}
+
+.admin-field-hint {
+    font-size: 0.625rem;
+    color: #64748b;
+}
+
+.admin-input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid #334155;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.admin-input-group:focus-within {
+    border-color: #6366f1;
+}
+
+.admin-input-group input {
+    border: none;
+    background: transparent;
+    border-radius: 0;
+}
+
+.admin-input-prefix,
+.admin-input-suffix {
+    padding: 0.75rem;
+    background: rgba(51, 65, 85, 0.5);
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* === Tuition Grid === */
+.admin-tuition-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.admin-tuition-section h4 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 0.75rem;
+    padding-left: 0.5rem;
+    border-left: 3px solid #6366f1;
+}
+
+/* === Bonus Table Editor === */
+.bonus-table-editor {
+    margin-top: 0.5rem;
+}
+
+.bonus-table-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+}
+
+.bonus-table-container {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.bonus-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+}
+
+.bonus-table th,
+.bonus-table td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #334155;
+}
+
+.bonus-th-corner {
+    background: #1e293b;
+    color: #64748b;
+    font-weight: 700;
+}
+
+.bonus-th-index {
+    background: #1e293b;
+    color: #94a3b8;
+    font-weight: 600;
+    min-width: 5rem;
+}
+
+.bonus-td-label {
+    background: rgba(99, 102, 241, 0.1);
+    color: #a5b4fc;
+    font-weight: 700;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.bonus-td-cell {
+    background: rgba(15, 23, 42, 0.3);
+}
+
+.bonus-td-cell.disabled {
+    background: rgba(51, 65, 85, 0.2);
+}
+
+.bonus-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bonus-prefix {
+    color: #64748b;
+    font-size: 0.625rem;
+    margin-right: 0.125rem;
+}
+
+.bonus-input {
+    width: 4rem;
+    padding: 0.375rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    color: #10b981;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.bonus-input:hover {
+    border-color: #334155;
+}
+
+.bonus-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.bonus-table-hint {
+    margin-top: 0.75rem;
+    font-size: 0.625rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* === Nav Links === */
+.admin-nav-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 1rem;
+    color: #a5b4fc;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.admin-nav-link:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
+    color: white;
+}
+
+/* === Footer === */
+.admin-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid #1e293b;
+    padding: 1rem;
+    text-align: center;
+}
+
+.admin-footer span {
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+}
