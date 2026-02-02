@@ -6,7 +6,7 @@ import React, { useRef } from 'react';
 import {
     Settings, DollarSign, Users, Building2, Target,
     Save, RotateCcw, Download, Upload, AlertTriangle,
-    Clock, TrendingUp
+    Clock, TrendingUp, Home
 } from 'lucide-react';
 
 import { useSettings, DEFAULT_SETTINGS } from '../../context/SettingsContext';
@@ -59,6 +59,9 @@ const AdminSettingsPanel = () => {
             <header className="admin-header">
                 <div className="admin-header-content">
                     <div className="admin-header-title">
+                        <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center mr-2" title="回首頁">
+                            <Home className="icon-md" />
+                        </a>
                         <div className="admin-header-icon">
                             <Settings className="icon-md" />
                         </div>

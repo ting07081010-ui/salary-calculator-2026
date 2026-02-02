@@ -35,7 +35,7 @@ const HomePage = () => {
 
                     <div className="home-nav-grid">
                         {/* Salary Calculator */}
-                        <a href="?salary" className="home-nav-card card-blue">
+                        <a href="?salary" className="home-nav-card card-blue hover-float">
                             <div className="home-nav-icon">
                                 <Calculator />
                             </div>
@@ -47,7 +47,7 @@ const HomePage = () => {
                         </a>
 
                         {/* Boss Dashboard */}
-                        <a href="?boss" className="home-nav-card card-indigo">
+                        <a href="?boss" className="home-nav-card card-indigo hover-float">
                             <div className="home-nav-icon">
                                 <Target />
                             </div>
@@ -59,7 +59,7 @@ const HomePage = () => {
                         </a>
 
                         {/* Admin Settings */}
-                        <a href="?admin" className="home-nav-card card-purple">
+                        <a href="?admin" className="home-nav-card card-purple hover-float">
                             <div className="home-nav-icon">
                                 <Settings />
                             </div>

@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Calculator, LinkIcon, Camera, Download, Printer, Check } from 'lucide-react';
+import { Calculator, LinkIcon, Camera, Download, Printer, Check, Home } from 'lucide-react';
 import { TEACHER_TYPES } from '../config/salaryConfig';
 
 /**
@@ -20,6 +20,10 @@ const Header = memo(({
         <header className="header">
             <div className="header-content">
                 <div className="header-title">
+                    <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center" title="回首頁">
+                        <Home className="icon-md" />
+                    </a>
+                    <div className="w-px h-6 bg-slate-200 mx-2" />
                     <div className="header-icon">
                         <Calculator className="icon-sm" />
                     </div>

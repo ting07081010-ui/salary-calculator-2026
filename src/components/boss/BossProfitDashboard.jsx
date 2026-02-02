@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Plus, Target, Download, Printer, BarChart2 } from 'lucide-react';
+import { Users, Plus, Target, Download, Printer, BarChart2, Home } from 'lucide-react';
 
 // Hooks
 import { useBossCalculator } from '../../hooks/useBossCalculator';
@@ -54,6 +54,9 @@ const BossProfitDashboard = () => {
             <header className="boss-header no-print">
                 <div className="boss-header-content">
                     <div className="boss-header-title">
+                        <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center mr-2" title="回首頁">
+                            <Home className="icon-md" />
+                        </a>
                         <div className="boss-header-icon">
                             <Target className="icon-md" />
                         </div>

@@ -1,11 +1,14 @@
-import { StrictMode } from 'react'
+import { StrictMode, lazy, Suspense } from 'react'
+const App = lazy(() => import('./App.jsx'))
+const BossApp = lazy(() => import('./BossApp.jsx'))
+const AdminApp = lazy(() => import('./AdminApp.jsx'))
+const HomeApp = lazy(() => import('./HomeApp.jsx'))
+
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
-import BossApp from './BossApp.jsx'
-import AdminApp from './AdminApp.jsx'
-import HomeApp from './HomeApp.jsx'
 import { SettingsProvider } from './context/SettingsContext'
+import PinGuard from './components/common/PinGuard'
+import Loading from './components/common/Loading'
 
 // 根據 URL 路徑、參數或 Hash 決定顯示哪個應用
 const { search, hash } = window.location
@@ -16,9 +19,21 @@ const isBossMode = search.includes('boss') || hash.includes('boss')
 const isSalaryMode = search.includes('salary') || hash.includes('salary')
 
 // 決定要渲染的應用
-const getApp = () => {
-  if (isAdminMode) return <AdminApp />
-  if (isBossMode) return <BossApp />
+const AppRoute = () => {
+  if (isAdminMode) {
+    return (
+      <PinGuard target="admin">
+        <AdminApp />
+      </PinGuard>
+    )
+  }
+  if (isBossMode) {
+    return (
+      <PinGuard target="boss">
+        <BossApp />
+      </PinGuard>
+    )
+  }
   if (isSalaryMode) return <App />
   // 預設顯示首頁
   return <HomeApp />
@@ -27,7 +42,9 @@ const getApp = () => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <SettingsProvider>
-      {getApp()}
+      <Suspense fallback={<Loading />}>
+        <AppRoute />
+      </Suspense>
     </SettingsProvider>
   </StrictMode>,
 )
