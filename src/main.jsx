@@ -9,6 +9,7 @@ import './index.css'
 import { SettingsProvider } from './context/SettingsContext'
 import PinGuard from './components/common/PinGuard'
 import Loading from './components/common/Loading'
+import ErrorBoundary from './components/common/ErrorBoundary'
 
 // 根據 URL 路徑、參數或 Hash 決定顯示哪個應用
 const { search, hash } = window.location
@@ -42,9 +43,12 @@ const AppRoute = () => {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <SettingsProvider>
-      <Suspense fallback={<Loading />}>
-        <AppRoute />
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<Loading />}>
+          <AppRoute />
+        </Suspense>
+      </ErrorBoundary>
     </SettingsProvider>
   </StrictMode>,
 )
+
