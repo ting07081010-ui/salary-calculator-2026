@@ -2,6 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Lock, Unlock, AlertTriangle, Clock } from 'lucide-react';
 import { SECURITY_CONFIG } from '../../config/securityConfig';
 
+const toHex = (buffer) =>
+    Array.from(new Uint8Array(buffer))
+        .map(byte => byte.toString(16).padStart(2, '0'))
+        .join('');
+
+const hashPin = async (value) => {
+    const data = new TextEncoder().encode(value);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    return toHex(hashBuffer);
+};
+
 /**
  * 強化版 PIN 碼保護元件
  * 包含：嘗試次數限制、鎖定機制、Session 超時
@@ -17,6 +28,8 @@ const PinGuard = ({ children, target }) => {
 
     const {
         CORRECT_PIN,
+        PIN_HASH,
+        PIN_LENGTH,
         MAX_ATTEMPTS,
         LOCKOUT_DURATION,
         SESSION_TIMEOUT,
@@ -119,12 +132,29 @@ const PinGuard = ({ children, target }) => {
         };
     }, [isAuthenticated, STORAGE_KEY, TIMESTAMP_KEY, isSessionValid]);
 
-    const handleUnlock = (e) => {
+    const verifyPin = useCallback(async (value) => {
+        if (PIN_HASH) {
+            if (!crypto?.subtle) {
+                console.warn('無法使用安全雜湊驗證 PIN，請確認瀏覽器環境');
+                return false;
+            }
+            const hashed = await hashPin(value);
+            return hashed === PIN_HASH;
+        }
+        return value === CORRECT_PIN;
+    }, [PIN_HASH, CORRECT_PIN]);
+
+    const handleUnlock = async (e) => {
         e.preventDefault();
 
         if (isLocked) return;
+        if (pin.length !== PIN_LENGTH) {
+            setError(true);
+            return;
+        }
 
-        if (pin === CORRECT_PIN) {
+        const isValid = await verifyPin(pin);
+        if (isValid) {
             // 成功解鎖
             sessionStorage.setItem(STORAGE_KEY, 'true');
             sessionStorage.setItem(TIMESTAMP_KEY, Date.now().toString());
@@ -203,7 +233,8 @@ const PinGuard = ({ children, target }) => {
                                     type="password"
                                     value={pin}
                                     onChange={(e) => {
-                                        setPin(e.target.value);
+                                        const sanitized = e.target.value.replace(/\D/g, '').slice(0, PIN_LENGTH);
+                                        setPin(sanitized);
                                         setError(false);
                                     }}
                                     className={`w-full text-center text-2xl font-bold tracking-widest py-3 border-2 rounded-xl outline-none transition-all
@@ -212,8 +243,11 @@ const PinGuard = ({ children, target }) => {
                                             : 'border-slate-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20'
                                         }
                                     `}
-                                    placeholder="••••"
-                                    maxLength={4}
+                                    placeholder={'•'.repeat(PIN_LENGTH)}
+                                    maxLength={PIN_LENGTH}
+                                    inputMode="numeric"
+                                    pattern="[0-9]*"
+                                    autoComplete="one-time-code"
                                     autoFocus
                                     aria-label="PIN 碼輸入"
                                     aria-describedby={error ? 'pin-error' : undefined}

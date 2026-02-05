@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { encodeSharePayload } from '../utils/shareLink';
 
 /**
  * 分享連結功能 Hook
@@ -8,8 +9,7 @@ export const useShareLink = ({ teacherType, classes, ptBasicHours }) => {
     const [copySuccess, setCopySuccess] = useState(false);
 
     const copyShareLink = useCallback(async () => {
-        const data = { teacherType, classes, ptBasicHours };
-        const encoded = btoa(JSON.stringify(data));
+        const encoded = encodeSharePayload({ teacherType, classes, ptBasicHours });
         const url = new URL(window.location.href);
         url.searchParams.set('s', encoded);
 

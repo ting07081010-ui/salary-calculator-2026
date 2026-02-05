@@ -8,6 +8,7 @@ import {
     MAX_CLASSES
 } from '../config/salaryConfig';
 import { generateId, getClassStage } from '../utils/formatters';
+import { decodeSharePayload } from '../utils/shareLink';
 
 /**
  * 薪資計算自訂 Hook
@@ -129,20 +130,16 @@ export const useSalaryCalculator = (initialTeacherType = TEACHER_TYPES.FULL_TIME
     const loadFromUrl = useCallback(() => {
         const params = new URLSearchParams(window.location.search);
         const dataStr = params.get('s');
-        if (dataStr) {
-            try {
-                const decoded = JSON.parse(atob(dataStr));
-                if (decoded.teacherType) setTeacherType(decoded.teacherType);
-                if (decoded.classes) setClasses(decoded.classes);
-                if (decoded.ptBasicHours !== undefined) setPtBasicHours(decoded.ptBasicHours);
-                return true;
-            } catch (e) {
-                console.warn("無法解析分享參數", e);
-                return false;
-            }
-        }
-        return false;
-    }, []);
+        if (!dataStr) return false;
+
+        const decoded = decodeSharePayload(dataStr);
+        if (!decoded) return false;
+
+        setTeacherType(decoded.teacherType);
+        setClasses(decoded.classes);
+        setPtBasicHours(decoded.ptBasicHours);
+        return true;
+    }, [setTeacherType, setClasses, setPtBasicHours]);
 
     return {
         // 狀態
