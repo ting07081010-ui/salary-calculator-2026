@@ -13,11 +13,24 @@ import ErrorBoundary from './components/common/ErrorBoundary'
 
 // 根據 URL 路徑、參數或 Hash 決定顯示哪個應用
 const { search, hash } = window.location
+const params = new URLSearchParams(search)
+const normalizedHash = hash.replace(/^#/, '').toLowerCase()
+const hashSegments = normalizedHash.split(/[/?&=]/).filter(Boolean)
 
-// 只檢查查詢參數和 hash，避免路徑中的字串誤判
-const isAdminMode = search.includes('admin') || hash.includes('admin')
-const isBossMode = search.includes('boss') || hash.includes('boss')
-const isSalaryMode = search.includes('salary') || hash.includes('salary')
+const isModeEnabled = (mode) => {
+  const lowerMode = mode.toLowerCase()
+  const modeParam = (params.get('mode') || '').toLowerCase()
+
+  return (
+    modeParam === lowerMode ||
+    params.has(lowerMode) ||
+    hashSegments.includes(lowerMode)
+  )
+}
+
+const isAdminMode = isModeEnabled('admin')
+const isBossMode = isModeEnabled('boss')
+const isSalaryMode = isModeEnabled('salary')
 
 // 決定要渲染的應用
 const AppRoute = () => {
@@ -51,4 +64,3 @@ createRoot(document.getElementById('root')).render(
     </SettingsProvider>
   </StrictMode>,
 )
-
