@@ -1,14 +1,15 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { Trash2, User, Clock, TrendingUp } from 'lucide-react';
 import { CLASS_TYPES, TEACHER_TYPES } from '../config/salaryConfig';
 import { formatCurrency } from '../utils/formatters';
+import { calculateClassData } from '../utils/calculations';
 
 /**
  * 班級配置卡片
  * 包含班級大小、學生人數、頻率設定
  */
 const ClassCard = memo(({
-    cls,
+    cls: rawCls,
     index,
     teacherType,
     updateClass,
@@ -17,25 +18,28 @@ const ClassCard = memo(({
     const fmt = formatCurrency;
     const isFullTime = teacherType === TEACHER_TYPES.FULL_TIME;
 
+    // 計算班級數據 (使用 memo 避免重複計算)
+    const cls = useMemo(() => calculateClassData(rawCls, teacherType), [rawCls, teacherType]);
+
     const handleTypeChange = useCallback((e) => {
-        updateClass(cls.id, 'type', e.target.value);
-    }, [cls.id, updateClass]);
+        updateClass(rawCls.id, 'type', e.target.value);
+    }, [rawCls.id, updateClass]);
 
     const handleCountChange = useCallback((e) => {
-        updateClass(cls.id, 'count', e.target.value);
-    }, [cls.id, updateClass]);
+        updateClass(rawCls.id, 'count', e.target.value);
+    }, [rawCls.id, updateClass]);
 
     const handleHoursChange = useCallback((e) => {
-        updateClass(cls.id, 'hours', e.target.value);
-    }, [cls.id, updateClass]);
+        updateClass(rawCls.id, 'hours', e.target.value);
+    }, [rawCls.id, updateClass]);
 
     const handleFrequencyChange = useCallback((freq) => {
-        updateClass(cls.id, 'frequency', freq);
-    }, [cls.id, updateClass]);
+        updateClass(rawCls.id, 'frequency', freq);
+    }, [rawCls.id, updateClass]);
 
     const handleRemove = useCallback(() => {
-        removeClass(cls.id);
-    }, [cls.id, removeClass]);
+        removeClass(rawCls.id);
+    }, [rawCls.id, removeClass]);
 
     return (
         <article className="class-card">
