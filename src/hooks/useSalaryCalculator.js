@@ -2,12 +2,12 @@ import { useState, useMemo, useCallback } from 'react';
 import {
     FULL_TIME_CONFIG,
     PT_CONFIG,
-    FREQUENCY_OPTIONS,
     TEACHER_TYPES,
     DEFAULT_CLASS,
     MAX_CLASSES
 } from '../config/salaryConfig';
-import { generateId, getClassStage } from '../utils/formatters';
+import { generateId } from '../utils/formatters';
+import { calculateClassData } from '../utils/calculations';
 import { decodeSharePayload } from '../utils/shareLink';
 
 /**
@@ -63,36 +63,7 @@ export const useSalaryCalculator = (initialTeacherType = TEACHER_TYPES.FULL_TIME
 
     // 計算每個班級的數據
     const calculatedData = useMemo(() => {
-        return classes.map(cls => {
-            const freqMultiplier = FREQUENCY_OPTIONS[cls.frequency]?.multiplier || 1.0;
-            const count = Math.min(cls.count, cls.type);
-
-            if (teacherType === TEACHER_TYPES.FULL_TIME) {
-                const bonusArr = FULL_TIME_CONFIG.BONUS_MAP[cls.type];
-                const rawBonus = bonusArr ? (bonusArr[count] || 0) : 0;
-                const stage = getClassStage(count, cls.type);
-
-                return {
-                    ...cls,
-                    freqMultiplier,
-                    subTotal: rawBonus * freqMultiplier,
-                    info: stage,
-                    maxStudents: cls.type
-                };
-            } else {
-                const hourlyArr = PT_CONFIG.HOURLY_MAP[cls.type];
-                const hourlyRate = hourlyArr ? (hourlyArr[count] || PT_CONFIG.BASE_HOURLY_RATE) : PT_CONFIG.BASE_HOURLY_RATE;
-
-                return {
-                    ...cls,
-                    freqMultiplier,
-                    hourlyRate,
-                    subTotal: (hourlyRate * cls.hours) * freqMultiplier,
-                    info: `時薪 $${hourlyRate}`,
-                    maxStudents: cls.type
-                };
-            }
-        });
+        return classes.map(cls => calculateClassData(cls, teacherType));
     }, [classes, teacherType]);
 
     // 計算總計

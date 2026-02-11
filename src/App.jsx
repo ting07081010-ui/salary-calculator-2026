@@ -124,7 +124,7 @@ const App = () => {
 
           {/* 班級卡片列表 */}
           <div className="class-list">
-            {calculatedData.map((cls, index) => (
+            {classes.map((cls, index) => (
               <ClassCard
                 key={cls.id}
                 cls={cls}
