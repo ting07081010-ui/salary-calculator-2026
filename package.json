@@ -5,6 +5,7 @@
   "type": "module",
   "homepage": "https://ting07081010-ui.github.io/salary-calculator-2026",
   "scripts": {
+    "test": "node --test src/**/*.test.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
