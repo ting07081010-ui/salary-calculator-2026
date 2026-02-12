@@ -55,15 +55,45 @@ const PinGuard = ({ children, target }) => {
     // 初始化：檢查驗證狀態、鎖定狀態、嘗試次數
     useEffect(() => {
         // 檢查 Session
-        const isAuth = sessionStorage.getItem(STORAGE_KEY);
-        if (isAuth === 'true' && isSessionValid()) {
-            setIsAuthenticated(true);
-            return;
-        } else if (isAuth === 'true') {
-            // Session 過期，清除
-            sessionStorage.removeItem(STORAGE_KEY);
-            sessionStorage.removeItem(TIMESTAMP_KEY);
-        }
+        const checkAuth = async () => {
+            const storedAuth = sessionStorage.getItem(STORAGE_KEY);
+
+            // 如果沒有存儲的驗證資訊，直接返回
+            if (!storedAuth) return;
+
+            // 檢查 Session 是否過期
+            if (!isSessionValid()) {
+                sessionStorage.removeItem(STORAGE_KEY);
+                sessionStorage.removeItem(TIMESTAMP_KEY);
+                return;
+            }
+
+            // 驗證存儲的 Hash
+            let expectedHash = PIN_HASH;
+
+            // 如果沒有設定 PIN_HASH，嘗試計算 CORRECT_PIN 的雜湊
+            if (!expectedHash) {
+                if (crypto?.subtle) {
+                    expectedHash = await hashPin(CORRECT_PIN);
+                } else {
+                    // 如果環境不支援 crypto.subtle 且沒有預設 hash (開發環境 fallback)
+                    // 只有在這種極端情況下才允許 'true'，但在生產環境應避免
+                    if (storedAuth === 'true') {
+                         setIsAuthenticated(true);
+                         return;
+                    }
+                }
+            }
+
+            if (storedAuth === expectedHash) {
+                setIsAuthenticated(true);
+            } else {
+                // Hash 不匹配 (可能是攻擊嘗試或資料損毀)
+                sessionStorage.removeItem(STORAGE_KEY);
+                sessionStorage.removeItem(TIMESTAMP_KEY);
+            }
+        };
+        checkAuth();
 
         // 檢查鎖定狀態
         const lockoutEnd = localStorage.getItem(LOCKOUT_KEY);
@@ -83,7 +113,7 @@ const PinGuard = ({ children, target }) => {
         if (storedAttempts) {
             setAttempts(parseInt(storedAttempts, 10));
         }
-    }, [target, STORAGE_KEY, TIMESTAMP_KEY, LOCKOUT_KEY, ATTEMPTS_KEY, isSessionValid]);
+    }, [target, STORAGE_KEY, TIMESTAMP_KEY, LOCKOUT_KEY, ATTEMPTS_KEY, isSessionValid, PIN_HASH, CORRECT_PIN]);
 
     // 鎖定倒計時
     useEffect(() => {
@@ -155,8 +185,15 @@ const PinGuard = ({ children, target }) => {
 
         const isValid = await verifyPin(pin);
         if (isValid) {
-            // 成功解鎖
-            sessionStorage.setItem(STORAGE_KEY, 'true');
+            // 成功解鎖 - 存儲 PIN 的雜湊值而非明文
+            let authValue = PIN_HASH;
+            if (!authValue && crypto?.subtle) {
+                authValue = await hashPin(CORRECT_PIN);
+            }
+            // Fallback (僅限開發/不安全環境)
+            if (!authValue) authValue = 'true';
+
+            sessionStorage.setItem(STORAGE_KEY, authValue);
             sessionStorage.setItem(TIMESTAMP_KEY, Date.now().toString());
             localStorage.removeItem(ATTEMPTS_KEY);
             setIsAuthenticated(true);
