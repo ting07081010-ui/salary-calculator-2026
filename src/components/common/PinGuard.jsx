@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Lock, Unlock, AlertTriangle, Clock } from 'lucide-react';
 import { SECURITY_CONFIG } from '../../config/securityConfig';
+import { debounce } from '../../utils/debounce';
 
 const toHex = (buffer) =>
     Array.from(new Uint8Array(buffer))
@@ -109,9 +110,10 @@ const PinGuard = ({ children, target }) => {
     useEffect(() => {
         if (!isAuthenticated) return;
 
-        const resetTimer = () => {
+        // 使用 debounce 減少頻繁寫入 Session Storage (特別是 scroll 事件)
+        const resetTimer = debounce(() => {
             sessionStorage.setItem(TIMESTAMP_KEY, Date.now().toString());
-        };
+        }, 500);
 
         // 監聽使用者活動
         const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
@@ -128,6 +130,7 @@ const PinGuard = ({ children, target }) => {
 
         return () => {
             events.forEach(event => window.removeEventListener(event, resetTimer));
+            resetTimer.cancel();
             clearInterval(checkSession);
         };
     }, [isAuthenticated, STORAGE_KEY, TIMESTAMP_KEY, isSessionValid]);
