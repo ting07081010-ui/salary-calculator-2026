@@ -49,21 +49,28 @@ const ClassCard = memo(({
                                 value={cls.type}
                                 onChange={handleTypeChange}
                                 className="class-type-select"
+                                aria-label={`第 ${index + 1} 班類型`}
                             >
                                 {CLASS_TYPES.map(t => (
                                     <option key={t.value} value={t.value}>{t.label}</option>
                                 ))}
                             </select>
-                            <div className="frequency-toggle print-hidden">
+                            <div
+                                className="frequency-toggle print-hidden"
+                                role="group"
+                                aria-label={`第 ${index + 1} 班上課頻率`}
+                            >
                                 <button
                                     onClick={() => handleFrequencyChange('full')}
                                     className={`frequency-btn ${cls.frequency === 'full' ? 'frequency-btn-active' : ''}`}
+                                    aria-pressed={cls.frequency === 'full'}
                                 >
                                     全期
                                 </button>
                                 <button
                                     onClick={() => handleFrequencyChange('single')}
                                     className={`frequency-btn ${cls.frequency === 'single' ? 'frequency-btn-single' : ''}`}
+                                    aria-pressed={cls.frequency === 'single'}
                                 >
                                     單日
                                 </button>
@@ -77,8 +84,12 @@ const ClassCard = memo(({
                         </div>
                     </div>
                 </div>
-                <button onClick={handleRemove} className="delete-btn print-hidden">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={handleRemove}
+                    className="delete-btn print-hidden"
+                    aria-label={`刪除第 ${index + 1} 班`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
@@ -89,7 +100,7 @@ const ClassCard = memo(({
                     <div className="student-count-section">
                         <div className="student-count-header">
                             <span className="control-label">
-                                <User className="icon-xs" /> 學生人數
+                                <User className="icon-xs" aria-hidden="true" /> 學生人數
                             </span>
                             <span className="student-count-value">
                                 {cls.count} <span className="student-count-max">/ {cls.maxStudents}人</span>
@@ -103,13 +114,14 @@ const ClassCard = memo(({
                             value={cls.count}
                             onChange={handleCountChange}
                             className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
+                            aria-label={`第 ${index + 1} 班學生人數`}
                         />
 
                         {/* PT 授課時數 */}
                         {!isFullTime && (
                             <div className="hours-input-section">
                                 <span className="control-label">
-                                    <Clock className="icon-xs" /> 授課時數
+                                    <Clock className="icon-xs" aria-hidden="true" /> 授課時數
                                 </span>
                                 <div className="hours-input-wrapper">
                                     <input
@@ -118,6 +130,7 @@ const ClassCard = memo(({
                                         value={cls.hours}
                                         onChange={handleHoursChange}
                                         className="hours-input"
+                                        aria-label={`第 ${index + 1} 班授課時數`}
                                     />
                                     <span className="hours-unit">hr</span>
                                 </div>
