@@ -53,13 +53,13 @@ const Header = memo(({
                             {copySuccess ? <Check className="icon-sm text-emerald" /> : <LinkIcon className="icon-sm" />}
                             <span className="toolbar-btn-text">{copySuccess ? '已複製' : '分享'}</span>
                         </button>
-                        <button onClick={exportAsImage} disabled={isExporting} className="toolbar-btn" title="匯出圖片">
+                        <button onClick={exportAsImage} disabled={isExporting} className="toolbar-btn" title="匯出圖片" aria-label="匯出圖片">
                             <Camera className={`icon-sm ${isExporting ? 'animate-pulse' : ''}`} />
                         </button>
-                        <button onClick={exportToCSV} className="toolbar-btn" title="匯出 CSV">
+                        <button onClick={exportToCSV} className="toolbar-btn" title="匯出 CSV" aria-label="匯出 CSV">
                             <Download className="icon-sm" />
                         </button>
-                        <button onClick={printReport} className="toolbar-btn" title="列印">
+                        <button onClick={printReport} className="toolbar-btn" title="列印" aria-label="列印">
                             <Printer className="icon-sm" />
                         </button>
                     </div>

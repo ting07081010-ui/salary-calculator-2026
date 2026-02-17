@@ -27,6 +27,7 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
                     value={ptBasicHours}
                     onChange={handleChange}
                     className="pt-extra-input"
+                    aria-label="非教學時數"
                 />
                 <span className="pt-extra-unit">HR</span>
             </div>
