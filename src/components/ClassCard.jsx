@@ -37,6 +37,8 @@ const ClassCard = memo(({
         removeClass(cls.id);
     }, [cls.id, removeClass]);
 
+    const labelSuffix = ` (第 ${index + 1} 班)`;
+
     return (
         <article className="class-card">
             {/* 卡片標題區 */}
@@ -49,6 +51,7 @@ const ClassCard = memo(({
                                 value={cls.type}
                                 onChange={handleTypeChange}
                                 className="class-type-select"
+                                aria-label={`選擇班級類型${labelSuffix}`}
                             >
                                 {CLASS_TYPES.map(t => (
                                     <option key={t.value} value={t.value}>{t.label}</option>
@@ -58,12 +61,14 @@ const ClassCard = memo(({
                                 <button
                                     onClick={() => handleFrequencyChange('full')}
                                     className={`frequency-btn ${cls.frequency === 'full' ? 'frequency-btn-active' : ''}`}
+                                    aria-pressed={cls.frequency === 'full'}
                                 >
                                     全期
                                 </button>
                                 <button
                                     onClick={() => handleFrequencyChange('single')}
                                     className={`frequency-btn ${cls.frequency === 'single' ? 'frequency-btn-single' : ''}`}
+                                    aria-pressed={cls.frequency === 'single'}
                                 >
                                     單日
                                 </button>
@@ -77,8 +82,12 @@ const ClassCard = memo(({
                         </div>
                     </div>
                 </div>
-                <button onClick={handleRemove} className="delete-btn print-hidden">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={handleRemove}
+                    className="delete-btn print-hidden"
+                    aria-label={`移除此班級${labelSuffix}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
@@ -103,6 +112,7 @@ const ClassCard = memo(({
                             value={cls.count}
                             onChange={handleCountChange}
                             className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
+                            aria-label={`調整學生人數${labelSuffix}`}
                         />
 
                         {/* PT 授課時數 */}
@@ -118,6 +128,7 @@ const ClassCard = memo(({
                                         value={cls.hours}
                                         onChange={handleHoursChange}
                                         className="hours-input"
+                                        aria-label={`輸入授課時數${labelSuffix}`}
                                     />
                                     <span className="hours-unit">hr</span>
                                 </div>
