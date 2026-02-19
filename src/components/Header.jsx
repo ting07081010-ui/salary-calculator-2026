@@ -20,7 +20,7 @@ const Header = memo(({
         <header className="header">
             <div className="header-content">
                 <div className="header-title">
-                    <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center" title="回首頁">
+                    <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center" title="回首頁" aria-label="回首頁">
                         <Home className="icon-md" />
                     </a>
                     <div className="w-px h-6 bg-slate-200 mx-2" />
@@ -32,16 +32,18 @@ const Header = memo(({
 
                 <div className="header-controls">
                     {/* 模式切換 */}
-                    <div className="mode-toggle">
+                    <div className="mode-toggle" role="group" aria-label="切換教師類型">
                         <button
                             onClick={() => setTeacherType(TEACHER_TYPES.FULL_TIME)}
                             className={`mode-btn ${teacherType === TEACHER_TYPES.FULL_TIME ? 'mode-btn-active-ft' : ''}`}
+                            aria-pressed={teacherType === TEACHER_TYPES.FULL_TIME}
                         >
                             正職
                         </button>
                         <button
                             onClick={() => setTeacherType(TEACHER_TYPES.PT)}
                             className={`mode-btn ${teacherType === TEACHER_TYPES.PT ? 'mode-btn-active-pt' : ''}`}
+                            aria-pressed={teacherType === TEACHER_TYPES.PT}
                         >
                             PT
                         </button>
@@ -49,17 +51,17 @@ const Header = memo(({
 
                     {/* 工具列 */}
                     <div className="toolbar">
-                        <button onClick={copyShareLink} className="toolbar-btn" title="複製分享連結">
+                        <button onClick={copyShareLink} className="toolbar-btn" title="複製分享連結" aria-label={copySuccess ? '已複製連結' : '複製分享連結'}>
                             {copySuccess ? <Check className="icon-sm text-emerald" /> : <LinkIcon className="icon-sm" />}
                             <span className="toolbar-btn-text">{copySuccess ? '已複製' : '分享'}</span>
                         </button>
-                        <button onClick={exportAsImage} disabled={isExporting} className="toolbar-btn" title="匯出圖片">
+                        <button onClick={exportAsImage} disabled={isExporting} className="toolbar-btn" title="匯出圖片" aria-label="匯出圖片">
                             <Camera className={`icon-sm ${isExporting ? 'animate-pulse' : ''}`} />
                         </button>
-                        <button onClick={exportToCSV} className="toolbar-btn" title="匯出 CSV">
+                        <button onClick={exportToCSV} className="toolbar-btn" title="匯出 CSV" aria-label="匯出 CSV">
                             <Download className="icon-sm" />
                         </button>
-                        <button onClick={printReport} className="toolbar-btn" title="列印">
+                        <button onClick={printReport} className="toolbar-btn" title="列印" aria-label="列印報表">
                             <Printer className="icon-sm" />
                         </button>
                     </div>
