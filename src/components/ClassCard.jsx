@@ -54,16 +54,22 @@ const ClassCard = memo(({
                                     <option key={t.value} value={t.value}>{t.label}</option>
                                 ))}
                             </select>
-                            <div className="frequency-toggle print-hidden">
+                            <div
+                                className="frequency-toggle print-hidden"
+                                role="group"
+                                aria-label={`班級 ${index + 1} 頻率設定`}
+                            >
                                 <button
                                     onClick={() => handleFrequencyChange('full')}
                                     className={`frequency-btn ${cls.frequency === 'full' ? 'frequency-btn-active' : ''}`}
+                                    aria-pressed={cls.frequency === 'full'}
                                 >
                                     全期
                                 </button>
                                 <button
                                     onClick={() => handleFrequencyChange('single')}
                                     className={`frequency-btn ${cls.frequency === 'single' ? 'frequency-btn-single' : ''}`}
+                                    aria-pressed={cls.frequency === 'single'}
                                 >
                                     單日
                                 </button>
@@ -77,8 +83,12 @@ const ClassCard = memo(({
                         </div>
                     </div>
                 </div>
-                <button onClick={handleRemove} className="delete-btn print-hidden">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={handleRemove}
+                    className="delete-btn print-hidden"
+                    aria-label={`刪除班級 ${index + 1}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
@@ -103,6 +113,7 @@ const ClassCard = memo(({
                             value={cls.count}
                             onChange={handleCountChange}
                             className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
+                            aria-label={`班級 ${index + 1} 學生人數`}
                         />
 
                         {/* PT 授課時數 */}
@@ -118,6 +129,7 @@ const ClassCard = memo(({
                                         value={cls.hours}
                                         onChange={handleHoursChange}
                                         className="hours-input"
+                                        aria-label={`班級 ${index + 1} 每週時數`}
                                     />
                                     <span className="hours-unit">hr</span>
                                 </div>
