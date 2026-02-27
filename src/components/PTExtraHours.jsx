@@ -1,12 +1,33 @@
-import React, { memo } from 'react';
-import { Timer } from 'lucide-react';
+import React, { memo, useCallback } from 'react';
+import { Timer, Plus, Minus } from 'lucide-react';
 
 /**
  * PT 非教學時數輸入元件
  */
 const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         setPtBasicHours(Math.max(0, Number(e.target.value)));
+    }, [setPtBasicHours]);
+
+    const handleIncrement = useCallback(() => {
+        setPtBasicHours(prev => prev + 1);
+    }, [setPtBasicHours]);
+
+    const handleDecrement = useCallback(() => {
+        setPtBasicHours(prev => Math.max(0, prev - 1));
+    }, [setPtBasicHours]);
+
+    const btnStyle = {
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+        color: 'var(--color-amber-600)',
+        padding: 'var(--spacing-1)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        transition: 'background-color 0.2s'
     };
 
     return (
@@ -21,14 +42,35 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
                 </div>
             </div>
             <div className="pt-extra-input-wrapper">
+                <button
+                    onClick={handleDecrement}
+                    style={btnStyle}
+                    aria-label="減少時數"
+                    type="button"
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-amber-100)'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                    <Minus className="icon-sm" />
+                </button>
                 <input
                     type="number"
                     min="0"
                     value={ptBasicHours}
                     onChange={handleChange}
                     className="pt-extra-input"
+                    aria-label="非教學時數"
                 />
                 <span className="pt-extra-unit">HR</span>
+                <button
+                    onClick={handleIncrement}
+                    style={btnStyle}
+                    aria-label="增加時數"
+                    type="button"
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-amber-100)'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                    <Plus className="icon-sm" />
+                </button>
             </div>
         </section>
     );
