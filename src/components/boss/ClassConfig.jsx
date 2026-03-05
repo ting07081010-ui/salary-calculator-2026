@@ -6,6 +6,7 @@ import { TEACHER_TYPES } from '../../config/bossConfig';
  * 班級配置元件
  */
 const ClassConfig = memo(({
+    index,
     cls,
     teacherId,
     teacherType,
@@ -101,6 +102,7 @@ const ClassConfig = memo(({
                 <button
                     onClick={() => onRemove(teacherId, cls.id)}
                     className="boss-remove-class-btn"
+                    aria-label={`刪除第 ${index + 1} 個班級`}
                 >
                     Remove
                 </button>
