@@ -70,16 +70,21 @@ const TeacherCard = memo(({
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={() => onRemove(teacher.id)}
+                    className="boss-delete-btn"
+                    aria-label={`刪除 ${teacher.name}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
             {/* Classes */}
             <div className="boss-teacher-classes">
-                {teacher.classList.map(cls => (
+                {teacher.classList.map((cls, index) => (
                     <ClassConfig
                         key={cls.id}
+                        index={index}
                         cls={cls}
                         teacherId={teacher.id}
                         teacherType={teacher.teacherType}
