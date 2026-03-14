@@ -123,6 +123,14 @@ const ClassCard = memo(({
                                     <Clock className="icon-xs" /> 授課時數
                                 </span>
                                 <div className="hours-input-wrapper">
+                                    <button
+                                        type="button"
+                                        onClick={() => updateClass(cls.id, 'hours', Math.max(0, (Number(cls.hours) || 0) - 1))}
+                                        aria-label={`減少班級 ${index + 1} 授課時數`}
+                                        className="text-emerald-600 text-xl font-bold px-2 touch-manipulation"
+                                    >
+                                        -
+                                    </button>
                                     <input
                                         type="number"
                                         min="0"
@@ -131,6 +139,14 @@ const ClassCard = memo(({
                                         className="hours-input"
                                         aria-label={`班級 ${index + 1} 每週時數`}
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => updateClass(cls.id, 'hours', Math.max(0, (Number(cls.hours) || 0) + 1))}
+                                        aria-label={`增加班級 ${index + 1} 授課時數`}
+                                        className="text-emerald-600 text-xl font-bold px-2 touch-manipulation"
+                                    >
+                                        +
+                                    </button>
                                     <span className="hours-unit">hr</span>
                                 </div>
                             </div>
