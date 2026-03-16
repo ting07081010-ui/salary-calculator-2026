@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Trash2, User, Clock, TrendingUp } from 'lucide-react';
+import { Trash2, User, Clock, TrendingUp, Plus, Minus } from 'lucide-react';
 import { CLASS_TYPES, TEACHER_TYPES } from '../config/salaryConfig';
 import { formatCurrency } from '../utils/formatters';
 
@@ -29,6 +29,14 @@ const ClassCard = memo(({
         updateClass(cls.id, 'hours', e.target.value);
     }, [cls.id, updateClass]);
 
+    const handleIncrementHours = useCallback(() => {
+        updateClass(cls.id, 'hours', Number(cls.hours || 0) + 1);
+    }, [cls.id, cls.hours, updateClass]);
+
+    const handleDecrementHours = useCallback(() => {
+        updateClass(cls.id, 'hours', Math.max(0, Number(cls.hours || 0) - 1));
+    }, [cls.id, cls.hours, updateClass]);
+
     const handleFrequencyChange = useCallback((freq) => {
         updateClass(cls.id, 'frequency', freq);
     }, [cls.id, updateClass]);
@@ -49,6 +57,7 @@ const ClassCard = memo(({
                                 value={cls.type}
                                 onChange={handleTypeChange}
                                 className="class-type-select"
+                                aria-label={`班級 ${index + 1} 類型`}
                             >
                                 {CLASS_TYPES.map(t => (
                                     <option key={t.value} value={t.value}>{t.label}</option>
@@ -123,6 +132,14 @@ const ClassCard = memo(({
                                     <Clock className="icon-xs" /> 授課時數
                                 </span>
                                 <div className="hours-input-wrapper">
+                                    <button
+                                        type="button"
+                                        onClick={handleDecrementHours}
+                                        aria-label={`減少班級 ${index + 1} 每週時數`}
+                                        style={{ padding: '0.5rem', color: 'var(--color-slate-400)' }}
+                                    >
+                                        <Minus className="icon-xs" aria-hidden="true" />
+                                    </button>
                                     <input
                                         type="number"
                                         min="0"
@@ -132,6 +149,14 @@ const ClassCard = memo(({
                                         aria-label={`班級 ${index + 1} 每週時數`}
                                     />
                                     <span className="hours-unit">hr</span>
+                                    <button
+                                        type="button"
+                                        onClick={handleIncrementHours}
+                                        aria-label={`增加班級 ${index + 1} 每週時數`}
+                                        style={{ padding: '0.5rem', color: 'var(--color-slate-400)' }}
+                                    >
+                                        <Plus className="icon-xs" aria-hidden="true" />
+                                    </button>
                                 </div>
                             </div>
                         )}
