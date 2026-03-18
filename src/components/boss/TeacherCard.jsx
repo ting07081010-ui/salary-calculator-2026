@@ -36,14 +36,22 @@ const TeacherCard = memo(({
                         <h3 className={`boss-teacher-name ${isOverloaded ? 'text-rose' : ''}`}>
                             {teacher.name}
                         </h3>
-                        <div className="boss-type-toggle">
+                    <div
+                        className="boss-type-toggle"
+                        role="radiogroup"
+                        aria-label={`${teacher.name} 教師類型`}
+                    >
                             <button
+                            role="radio"
+                            aria-checked={teacher.teacherType === TEACHER_TYPES.FULL_TIME}
                                 onClick={() => handleTypeChange(TEACHER_TYPES.FULL_TIME)}
                                 className={`boss-type-btn ${teacher.teacherType === TEACHER_TYPES.FULL_TIME ? 'active-ft' : ''}`}
                             >
                                 正職
                             </button>
                             <button
+                            role="radio"
+                            aria-checked={teacher.teacherType === TEACHER_TYPES.PT}
                                 onClick={() => handleTypeChange(TEACHER_TYPES.PT)}
                                 className={`boss-type-btn ${teacher.teacherType === TEACHER_TYPES.PT ? 'active-pt' : ''}`}
                             >
@@ -70,8 +78,12 @@ const TeacherCard = memo(({
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={() => onRemove(teacher.id)}
+                    className="boss-delete-btn"
+                    aria-label={`移除教師 ${teacher.name}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
