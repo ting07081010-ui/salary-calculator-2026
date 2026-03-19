@@ -64,23 +64,29 @@ const TeacherCard = memo(({
                                     value={teacher.ptBasicHours}
                                     onChange={handlePtHoursChange}
                                     className="boss-pt-hours-input"
+                                    aria-label={`${teacher.name} 的非教學時數`}
                                 /> hr
                             </div>
                         )}
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={() => onRemove(teacher.id)}
+                    className="boss-delete-btn"
+                    aria-label={`刪除老師 ${teacher.name}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
             {/* Classes */}
             <div className="boss-teacher-classes">
-                {teacher.classList.map(cls => (
+                {teacher.classList.map((cls, index) => (
                     <ClassConfig
                         key={cls.id}
                         cls={cls}
+                        index={index}
                         teacherId={teacher.id}
                         teacherType={teacher.teacherType}
                         onUpdate={onUpdateClass}
