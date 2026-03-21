@@ -25,6 +25,20 @@ const ClassCard = memo(({
         updateClass(cls.id, 'count', e.target.value);
     }, [cls.id, updateClass]);
 
+    const handleDecrement = useCallback(() => {
+        const current = Number(cls.count) || 0;
+        if (current > 0) {
+            updateClass(cls.id, 'count', current - 1);
+        }
+    }, [cls.id, cls.count, updateClass]);
+
+    const handleIncrement = useCallback(() => {
+        const current = Number(cls.count) || 0;
+        if (current < cls.maxStudents) {
+            updateClass(cls.id, 'count', current + 1);
+        }
+    }, [cls.id, cls.count, cls.maxStudents, updateClass]);
+
     const handleHoursChange = useCallback((e) => {
         updateClass(cls.id, 'hours', e.target.value);
     }, [cls.id, updateClass]);
@@ -105,16 +119,38 @@ const ClassCard = memo(({
                                 {cls.count} <span className="student-count-max">/ {cls.maxStudents}人</span>
                             </span>
                         </div>
-                        <input
-                            type="range"
-                            min="0"
-                            max={cls.maxStudents}
-                            step="1"
-                            value={cls.count}
-                            onChange={handleCountChange}
-                            className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
-                            aria-label={`班級 ${index + 1} 學生人數`}
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
+                            <button
+                                type="button"
+                                onClick={handleDecrement}
+                                disabled={Number(cls.count) <= 0}
+                                className="toolbar-btn print-hidden"
+                                aria-label={`減少班級 ${index + 1} 學生人數`}
+                                style={{ width: '2.5rem', height: '2.5rem', justifyContent: 'center', borderRadius: '50%', fontSize: '1.25rem', padding: 0, opacity: Number(cls.count) <= 0 ? 0.5 : 1 }}
+                            >
+                                -
+                            </button>
+                            <input
+                                type="range"
+                                min="0"
+                                max={cls.maxStudents}
+                                step="1"
+                                value={cls.count}
+                                onChange={handleCountChange}
+                                className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
+                                aria-label={`班級 ${index + 1} 學生人數`}
+                            />
+                            <button
+                                type="button"
+                                onClick={handleIncrement}
+                                disabled={Number(cls.count) >= cls.maxStudents}
+                                className="toolbar-btn print-hidden"
+                                aria-label={`增加班級 ${index + 1} 學生人數`}
+                                style={{ width: '2.5rem', height: '2.5rem', justifyContent: 'center', borderRadius: '50%', fontSize: '1.25rem', padding: 0, opacity: Number(cls.count) >= cls.maxStudents ? 0.5 : 1 }}
+                            >
+                                +
+                            </button>
+                        </div>
 
                         {/* PT 授課時數 */}
                         {!isFullTime && (
