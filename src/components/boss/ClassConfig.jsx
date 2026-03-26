@@ -43,12 +43,14 @@ const ClassConfig = memo(({
                     <button
                         onClick={handleFrequencyToggle}
                         className={`boss-freq-btn ${cls.frequency === 'single' ? 'single' : ''}`}
+                        aria-label={`切換 ${cls.type}人班頻率: ${cls.frequency === 'full' ? '全期 (1.0)' : '單日 (0.5)'}`}
                     >
                         {cls.frequency === 'full' ? '全期 (1.0)' : '單日 (0.5)'}
                     </button>
                     <button
                         onClick={handleLevelToggle}
                         className={`boss-level-btn ${cls.level === 'advanced' ? 'advanced' : ''}`}
+                        aria-label={`切換 ${cls.type}人班難易度: ${cls.level === 'standard' ? '標準課程' : '進階課程'}`}
                     >
                         {cls.level === 'standard' ? '標準課程' : '進階課程'}
                     </button>
@@ -101,6 +103,7 @@ const ClassConfig = memo(({
                 <button
                     onClick={() => onRemove(teacherId, cls.id)}
                     className="boss-remove-class-btn"
+                    aria-label={`Remove ${cls.type}人班`}
                 >
                     Remove
                 </button>
