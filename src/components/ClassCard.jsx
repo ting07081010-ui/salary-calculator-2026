@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Trash2, User, Clock, TrendingUp } from 'lucide-react';
+import { Trash2, User, Clock, TrendingUp, Minus, Plus } from 'lucide-react';
 import { CLASS_TYPES, TEACHER_TYPES } from '../config/salaryConfig';
 import { formatCurrency } from '../utils/formatters';
 
@@ -32,6 +32,16 @@ const ClassCard = memo(({
     const handleFrequencyChange = useCallback((freq) => {
         updateClass(cls.id, 'frequency', freq);
     }, [cls.id, updateClass]);
+
+    const handleIncrement = useCallback(() => {
+        const newCount = Math.min(Number(cls.count) + 1, cls.maxStudents);
+        updateClass(cls.id, 'count', newCount);
+    }, [cls.count, cls.maxStudents, cls.id, updateClass]);
+
+    const handleDecrement = useCallback(() => {
+        const newCount = Math.max(Number(cls.count) - 1, 0);
+        updateClass(cls.id, 'count', newCount);
+    }, [cls.count, cls.id, updateClass]);
 
     const handleRemove = useCallback(() => {
         removeClass(cls.id);
@@ -105,16 +115,36 @@ const ClassCard = memo(({
                                 {cls.count} <span className="student-count-max">/ {cls.maxStudents}人</span>
                             </span>
                         </div>
-                        <input
-                            type="range"
-                            min="0"
-                            max={cls.maxStudents}
-                            step="1"
-                            value={cls.count}
-                            onChange={handleCountChange}
-                            className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
-                            aria-label={`班級 ${index + 1} 學生人數`}
-                        />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
+                            <button
+                                type="button"
+                                className="toolbar-btn print-hidden"
+                                onClick={handleDecrement}
+                                disabled={Number(cls.count) <= 0}
+                                aria-label={`減少班級 ${index + 1} 學生人數`}
+                            >
+                                <Minus className="icon-sm" aria-hidden="true" />
+                            </button>
+                            <input
+                                type="range"
+                                min="0"
+                                max={cls.maxStudents}
+                                step="1"
+                                value={cls.count}
+                                onChange={handleCountChange}
+                                className={`range-slider print-hidden ${isFullTime ? 'accent-indigo' : 'accent-amber'}`}
+                                aria-label={`班級 ${index + 1} 學生人數`}
+                            />
+                            <button
+                                type="button"
+                                className="toolbar-btn print-hidden"
+                                onClick={handleIncrement}
+                                disabled={Number(cls.count) >= cls.maxStudents}
+                                aria-label={`增加班級 ${index + 1} 學生人數`}
+                            >
+                                <Plus className="icon-sm" aria-hidden="true" />
+                            </button>
+                        </div>
 
                         {/* PT 授課時數 */}
                         {!isFullTime && (
