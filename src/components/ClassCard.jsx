@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Trash2, User, Clock, TrendingUp } from 'lucide-react';
+import { Trash2, User, Clock, TrendingUp, Minus, Plus } from 'lucide-react';
 import { CLASS_TYPES, TEACHER_TYPES } from '../config/salaryConfig';
 import { formatCurrency } from '../utils/formatters';
 
@@ -24,6 +24,20 @@ const ClassCard = memo(({
     const handleCountChange = useCallback((e) => {
         updateClass(cls.id, 'count', e.target.value);
     }, [cls.id, updateClass]);
+
+    const decrementCount = useCallback(() => {
+        const current = Number(cls.count);
+        if (current > 0) {
+            updateClass(cls.id, 'count', current - 1);
+        }
+    }, [cls.id, cls.count, updateClass]);
+
+    const incrementCount = useCallback(() => {
+        const current = Number(cls.count);
+        if (current < cls.maxStudents) {
+            updateClass(cls.id, 'count', current + 1);
+        }
+    }, [cls.id, cls.count, cls.maxStudents, updateClass]);
 
     const handleHoursChange = useCallback((e) => {
         updateClass(cls.id, 'hours', e.target.value);
@@ -101,9 +115,31 @@ const ClassCard = memo(({
                             <span className="control-label">
                                 <User className="icon-xs" /> 學生人數
                             </span>
-                            <span className="student-count-value">
-                                {cls.count} <span className="student-count-max">/ {cls.maxStudents}人</span>
-                            </span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <button
+                                    type="button"
+                                    onClick={decrementCount}
+                                    disabled={Number(cls.count) <= 0}
+                                    className="toolbar-btn print-hidden"
+                                    aria-label={`班級 ${index + 1} 減少學生人數`}
+                                    style={{ padding: '4px' }}
+                                >
+                                    <Minus className="icon-xs" aria-hidden="true" />
+                                </button>
+                                <span className="student-count-value">
+                                    {cls.count} <span className="student-count-max">/ {cls.maxStudents}人</span>
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={incrementCount}
+                                    disabled={Number(cls.count) >= cls.maxStudents}
+                                    className="toolbar-btn print-hidden"
+                                    aria-label={`班級 ${index + 1} 增加學生人數`}
+                                    style={{ padding: '4px' }}
+                                >
+                                    <Plus className="icon-xs" aria-hidden="true" />
+                                </button>
+                            </div>
                         </div>
                         <input
                             type="range"
