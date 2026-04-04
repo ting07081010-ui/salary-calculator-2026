@@ -18,6 +18,7 @@ const SettingsSection = memo(({
             <button
                 className="admin-section-header"
                 onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
             >
                 <div className="admin-section-title">
                     {Icon && <Icon className="icon-md" />}
