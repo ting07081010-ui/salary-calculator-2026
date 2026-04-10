@@ -70,8 +70,12 @@ const TeacherCard = memo(({
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={() => onRemove(teacher.id)}
+                    className="boss-delete-btn"
+                    aria-label={`刪除教師 ${teacher.name}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
@@ -92,8 +96,9 @@ const TeacherCard = memo(({
                     <button
                         onClick={() => onAddClass(teacher.id)}
                         className="boss-add-class-btn"
+                        aria-label={`新增班級給 ${teacher.name}`}
                     >
-                        <Plus className="icon-sm" /> Add Class Config
+                        <Plus className="icon-sm" aria-hidden="true" /> Add Class Config
                     </button>
                 )}
             </div>

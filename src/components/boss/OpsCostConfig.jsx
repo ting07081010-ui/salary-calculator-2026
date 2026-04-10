@@ -31,6 +31,7 @@ const OpsCostConfig = memo(({
                 <button
                     onClick={() => setShowConfig(!showConfig)}
                     className="boss-ops-toggle"
+                    aria-expanded={showConfig}
                 >
                     {showConfig ? '完成調整' : '展開參數調整'}
                 </button>
