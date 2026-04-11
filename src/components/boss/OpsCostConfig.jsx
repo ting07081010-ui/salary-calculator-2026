@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useId } from 'react';
 import { Settings, Home, CreditCard, Megaphone, UserPlus, Package } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatters';
 
@@ -13,31 +13,34 @@ const OpsCostConfig = memo(({
     onUpdateCost
 }) => {
     const fmt = formatCurrency;
+    const contentId = useId();
 
     const configItems = [
-        { label: '每月房租', key: 'rent', icon: <Home className="icon-xs" /> },
-        { label: '貸款償還', key: 'loan', icon: <CreditCard className="icon-xs" /> },
-        { label: '行銷推廣', key: 'marketing', icon: <Megaphone className="icon-xs" /> },
-        { label: 'PT支援基數', key: 'ptSupportBase', icon: <UserPlus className="icon-xs" /> },
-        { label: '學員雜費/人', key: 'miscPerStudent', icon: <Package className="icon-xs" /> }
+        { label: '每月房租', key: 'rent', icon: <Home className="icon-xs" aria-hidden="true" /> },
+        { label: '貸款償還', key: 'loan', icon: <CreditCard className="icon-xs" aria-hidden="true" /> },
+        { label: '行銷推廣', key: 'marketing', icon: <Megaphone className="icon-xs" aria-hidden="true" /> },
+        { label: 'PT支援基數', key: 'ptSupportBase', icon: <UserPlus className="icon-xs" aria-hidden="true" /> },
+        { label: '學員雜費/人', key: 'miscPerStudent', icon: <Package className="icon-xs" aria-hidden="true" /> }
     ];
 
     return (
         <section className="boss-ops-section">
             <div className="boss-ops-header">
                 <h2 className="boss-ops-title">
-                    <Settings className="icon-sm" /> 營運成本核心參數
+                    <Settings className="icon-sm" aria-hidden="true" /> 營運成本核心參數
                 </h2>
                 <button
                     onClick={() => setShowConfig(!showConfig)}
                     className="boss-ops-toggle"
+                    aria-expanded={showConfig}
+                    aria-controls={contentId}
                 >
                     {showConfig ? '完成調整' : '展開參數調整'}
                 </button>
             </div>
 
             {showConfig ? (
-                <div className="boss-ops-grid">
+                <div id={contentId} className="boss-ops-grid">
                     {configItems.map(item => (
                         <div key={item.key} className="boss-ops-input-card">
                             <label className="boss-ops-label">
@@ -54,7 +57,7 @@ const OpsCostConfig = memo(({
                     ))}
                 </div>
             ) : (
-                <div className="boss-ops-summary">
+                <div id={contentId} className="boss-ops-summary">
                     <div className="boss-ops-summary-item">
                         <span className="boss-ops-summary-label">PT支援費:</span>
                         <span className="boss-ops-summary-value">${fmt(financial.ptCost)}</span>
