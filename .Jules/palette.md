@@ -1,7 +1,3 @@
-# Palette's Journal
-
-A collection of critical UX and Accessibility learnings.
-
-## 2024-05-23 - Unique Labels in Lists
-**Learning:** Screen readers announce controls by their accessible name. In lists of identical items (like class cards), generic labels like "Delete" or "Hours" become ambiguous ("Delete what?").
-**Action:** Always append a unique identifier (like index or ID) to `aria-label` for controls in list items (e.g., "Delete Class 1").
+## 2024-05-18 - Header Accessibility Enhancements
+**Learning:** Exclusive mode toggles and icon-heavy toolbars often lack proper semantics. Without `aria-hidden="true"`, `lucide-react` icons inside buttons can cause confusing screen reader announcements, especially when paired with generic or missing `aria-label`s on the parent container.
+**Action:** Always wrap exclusive toggle button groups in `role="radiogroup"`, assign `role="radio"` and `aria-checked` to the individual buttons, and apply `aria-hidden="true"` to any decorative SVGs while ensuring the parent `<button>` has a descriptive `aria-label`.
