@@ -58,20 +58,25 @@ const TeacherCard = memo(({
                         </span>
                         {teacher.teacherType === TEACHER_TYPES.PT && (
                             <div className="boss-pt-hours">
-                                <Timer className="icon-xs" /> 非教學:
+                                <Timer className="icon-xs" aria-hidden="true" /> 非教學:
                                 <input
                                     type="number"
                                     value={teacher.ptBasicHours}
                                     onChange={handlePtHoursChange}
                                     className="boss-pt-hours-input"
+                                    aria-label={`教師 ${teacher.name} 的非教學時數`}
                                 /> hr
                             </div>
                         )}
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={() => onRemove(teacher.id)}
+                    className="boss-delete-btn"
+                    aria-label={`刪除教師 ${teacher.name}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
@@ -93,7 +98,7 @@ const TeacherCard = memo(({
                         onClick={() => onAddClass(teacher.id)}
                         className="boss-add-class-btn"
                     >
-                        <Plus className="icon-sm" /> Add Class Config
+                        <Plus className="icon-sm" aria-hidden="true" /> Add Class Config
                     </button>
                 )}
             </div>
@@ -108,7 +113,7 @@ const TeacherCard = memo(({
                 </div>
                 <div className="boss-profit-row">
                     <span className="boss-profit-label">
-                        盈餘貢獻度 <ChevronRight className="icon-xs" />
+                        盈餘貢獻度 <ChevronRight className="icon-xs" aria-hidden="true" />
                     </span>
                     <span className={`boss-profit-value ${teacher.tProfit > 0 ? 'text-emerald' : 'text-rose'}`}>
                         {teacher.tProfit > 0 ? '+' : ''}${fmt(teacher.tProfit)}
