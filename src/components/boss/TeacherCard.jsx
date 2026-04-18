@@ -36,14 +36,18 @@ const TeacherCard = memo(({
                         <h3 className={`boss-teacher-name ${isOverloaded ? 'text-rose' : ''}`}>
                             {teacher.name}
                         </h3>
-                        <div className="boss-type-toggle">
+                        <div className="boss-type-toggle" role="radiogroup" aria-label={`教師 ${teacher.name} 類型`}>
                             <button
+                                role="radio"
+                                aria-checked={teacher.teacherType === TEACHER_TYPES.FULL_TIME}
                                 onClick={() => handleTypeChange(TEACHER_TYPES.FULL_TIME)}
                                 className={`boss-type-btn ${teacher.teacherType === TEACHER_TYPES.FULL_TIME ? 'active-ft' : ''}`}
                             >
                                 正職
                             </button>
                             <button
+                                role="radio"
+                                aria-checked={teacher.teacherType === TEACHER_TYPES.PT}
                                 onClick={() => handleTypeChange(TEACHER_TYPES.PT)}
                                 className={`boss-type-btn ${teacher.teacherType === TEACHER_TYPES.PT ? 'active-pt' : ''}`}
                             >
@@ -58,20 +62,25 @@ const TeacherCard = memo(({
                         </span>
                         {teacher.teacherType === TEACHER_TYPES.PT && (
                             <div className="boss-pt-hours">
-                                <Timer className="icon-xs" /> 非教學:
+                                <Timer className="icon-xs" aria-hidden="true" /> 非教學:
                                 <input
                                     type="number"
                                     value={teacher.ptBasicHours}
                                     onChange={handlePtHoursChange}
                                     className="boss-pt-hours-input"
+                                    aria-label="非教學時數"
                                 /> hr
                             </div>
                         )}
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button
+                    onClick={() => onRemove(teacher.id)}
+                    className="boss-delete-btn"
+                    aria-label={`刪除教師 ${teacher.name}`}
+                >
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
@@ -108,7 +117,7 @@ const TeacherCard = memo(({
                 </div>
                 <div className="boss-profit-row">
                     <span className="boss-profit-label">
-                        盈餘貢獻度 <ChevronRight className="icon-xs" />
+                        盈餘貢獻度 <ChevronRight className="icon-xs" aria-hidden="true" />
                     </span>
                     <span className={`boss-profit-value ${teacher.tProfit > 0 ? 'text-emerald' : 'text-rose'}`}>
                         {teacher.tProfit > 0 ? '+' : ''}${fmt(teacher.tProfit)}
