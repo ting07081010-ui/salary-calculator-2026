@@ -1,62 +1,62 @@
+import time
 from playwright.sync_api import sync_playwright
 
-def verify_aria_labels():
+def verify_ui_changes():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+        # 建立 context 以避免嚴格模式，並設置較大的視窗以避免 RWD 問題導致按鈕消失
+        context = browser.new_context(viewport={'width': 1280, 'height': 800})
+        page = context.new_page()
 
-        # Navigate to the app with salary calculator
-        page.goto("http://localhost:5173/salary-calculator-2026/?salary")
+        try:
+            # 依據 memory 提示，應存取 /salary-calculator-2026/
+            page.goto("http://localhost:5173/salary-calculator-2026/", timeout=60000)
 
-        # Wait for ClassCard to load (it should be there by default)
-        page.wait_for_selector(".class-card")
+            # 等待載入完成
+            page.wait_for_selector('text=薪資試算系統 2026')
 
-        # 1. Verify Delete Button ARIA Label
-        delete_btn = page.locator(".delete-btn").first
-        aria_label_delete = delete_btn.get_attribute("aria-label")
-        print(f"Delete Button ARIA Label: {aria_label_delete}")
-        assert aria_label_delete == "刪除班級 1", f"Expected '刪除班級 1', got '{aria_label_delete}'"
+            print("Navigating to Salary Calculator mode...")
 
-        # Verify Icon inside Delete Button is hidden
-        delete_icon = delete_btn.locator("svg")
-        aria_hidden_icon = delete_icon.get_attribute("aria-hidden")
-        print(f"Delete Icon ARIA Hidden: {aria_hidden_icon}")
-        assert aria_hidden_icon == "true", f"Expected 'true', got '{aria_hidden_icon}'"
+            # 依據 memory 點擊指定連結前往計算機
+            calculator_link = page.get_by_role('link', name='薪資計算器')
+            if calculator_link.count() == 0:
+                 # 若有其他文案，抓取卡片連結
+                 calculator_link = page.locator('a.home-nav-card.card-blue')
+            calculator_link.click()
 
-        # 2. Verify Frequency Toggle Group
-        freq_group = page.locator(".frequency-toggle").first
-        role_group = freq_group.get_attribute("role")
-        aria_label_group = freq_group.get_attribute("aria-label")
-        print(f"Freq Group Role: {role_group}")
-        print(f"Freq Group ARIA Label: {aria_label_group}")
-        assert role_group == "group", f"Expected 'group', got '{role_group}'"
-        assert aria_label_group == "班級 1 頻率設定", f"Expected '班級 1 頻率設定', got '{aria_label_group}'"
+            # 等待 Header 工具列出現
+            page.wait_for_selector('.toolbar-btn', timeout=10000)
 
-        # Verify Frequency Buttons aria-pressed
-        full_btn = freq_group.locator("button").nth(0)
-        single_btn = freq_group.locator("button").nth(1)
+            print("Taking screenshot of Salary Calculator mode...")
+            page.screenshot(path="verification/header_verification.png", full_page=False)
 
-        # Assuming default is 'full'
-        aria_pressed_full = full_btn.get_attribute("aria-pressed")
-        aria_pressed_single = single_btn.get_attribute("aria-pressed")
-        print(f"Full Button ARIA Pressed: {aria_pressed_full}")
-        print(f"Single Button ARIA Pressed: {aria_pressed_single}")
+            print("Navigating to Boss Dashboard mode...")
+            # 回到首頁並進入 Boss 模式
+            page.goto("http://localhost:5173/salary-calculator-2026/?boss")
 
-        # The exact value might depend on default state, but we check if attribute exists and is boolean-ish
-        assert aria_pressed_full in ["true", "false"], f"Expected 'true' or 'false', got '{aria_pressed_full}'"
-        assert aria_pressed_single in ["true", "false"], f"Expected 'true' or 'false', got '{aria_pressed_single}'"
+            # 由於有 PinGuard，可能需要 Bypass (依據 memory)
+            print("Bypassing PinGuard...")
+            page.evaluate("""
+                sessionStorage.setItem('auth_session_boss', 'true');
+                sessionStorage.setItem('auth_timestamp_boss', Date.now().toString());
+            """)
+            page.reload()
 
-        # 3. Verify Student Count Slider
-        student_slider = page.locator(".range-slider").first
-        aria_label_slider = student_slider.get_attribute("aria-label")
-        print(f"Student Slider ARIA Label: {aria_label_slider}")
-        assert aria_label_slider == "班級 1 學生人數", f"Expected '班級 1 學生人數', got '{aria_label_slider}'"
+            # 等待載入
+            page.wait_for_selector('.boss-header', timeout=10000)
 
-        # Take screenshot
-        page.screenshot(path="verification/class_card_verification.png")
-        print("Verification screenshot saved to verification/class_card_verification.png")
+            print("Taking screenshot of Boss Dashboard mode...")
+            page.screenshot(path="verification/boss_dashboard_verification.png", full_page=False)
 
-        browser.close()
+            print("Verification script completed.")
+
+        except Exception as e:
+            print(f"Error during verification: {e}")
+            page.screenshot(path="verification/error.png")
+            raise e
+        finally:
+            context.close()
+            browser.close()
 
 if __name__ == "__main__":
-    verify_aria_labels()
+    verify_ui_changes()
