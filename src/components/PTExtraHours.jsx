@@ -12,8 +12,8 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
     return (
         <section className="pt-extra-section">
             <div className="pt-extra-header">
-                <div className="pt-extra-icon">
-                    <Timer className="icon-sm" />
+                <div className="pt-extra-icon" aria-hidden="true">
+                    <Timer className="icon-sm" aria-hidden="true" />
                 </div>
                 <div>
                     <h3 className="pt-extra-title">非教學時數</h3>
@@ -27,6 +27,7 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
                     value={ptBasicHours}
                     onChange={handleChange}
                     className="pt-extra-input"
+                    aria-label="非教學時數"
                 />
                 <span className="pt-extra-unit">HR</span>
             </div>
