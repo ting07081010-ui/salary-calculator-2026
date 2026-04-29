@@ -6,6 +6,7 @@ import { TEACHER_TYPES } from '../../config/bossConfig';
  * 班級配置元件
  */
 const ClassConfig = memo(({
+    index,
     cls,
     teacherId,
     teacherType,
@@ -39,16 +40,22 @@ const ClassConfig = memo(({
         <div className={`boss-class-config ${cls.level === 'advanced' ? 'advanced' : ''}`}>
             {/* Header buttons */}
             <div className="boss-class-header">
-                <div className="boss-class-buttons">
+                <div
+                    className="boss-class-buttons"
+                    role="group"
+                    aria-label={`班級 ${index + 1} 屬性設定`}
+                >
                     <button
                         onClick={handleFrequencyToggle}
                         className={`boss-freq-btn ${cls.frequency === 'single' ? 'single' : ''}`}
+                        aria-pressed={cls.frequency === 'single'}
                     >
                         {cls.frequency === 'full' ? '全期 (1.0)' : '單日 (0.5)'}
                     </button>
                     <button
                         onClick={handleLevelToggle}
                         className={`boss-level-btn ${cls.level === 'advanced' ? 'advanced' : ''}`}
+                        aria-pressed={cls.level === 'advanced'}
                     >
                         {cls.level === 'standard' ? '標準課程' : '進階課程'}
                     </button>
@@ -64,6 +71,7 @@ const ClassConfig = memo(({
                     value={cls.type}
                     onChange={handleTypeChange}
                     className="boss-class-select"
+                    aria-label={`班級 ${index + 1} 類型`}
                 >
                     <option value={5}>5人精緻班</option>
                     <option value={10}>10人標準班</option>
@@ -76,6 +84,7 @@ const ClassConfig = memo(({
                     value={cls.count}
                     onChange={handleCountChange}
                     className="boss-class-slider"
+                    aria-label={`班級 ${index + 1} 學生人數`}
                 />
             </div>
 
@@ -89,6 +98,7 @@ const ClassConfig = memo(({
                             value={cls.hours}
                             onChange={handleHoursChange}
                             className="boss-hours-input"
+                            aria-label={`班級 ${index + 1} 每月授課時數`}
                         /> hr
                     </span>
                     <span className="boss-hourly-rate">${cls.hourlyRate}/hr</span>
@@ -101,6 +111,7 @@ const ClassConfig = memo(({
                 <button
                     onClick={() => onRemove(teacherId, cls.id)}
                     className="boss-remove-class-btn"
+                    aria-label={`移除班級 ${index + 1}`}
                 >
                     Remove
                 </button>
