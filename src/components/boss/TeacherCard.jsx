@@ -8,6 +8,7 @@ import ClassConfig from './ClassConfig';
  * 師資配置卡片
  */
 const TeacherCard = memo(({
+    index,
     teacher,
     onRemove,
     onUpdateField,
@@ -64,22 +65,24 @@ const TeacherCard = memo(({
                                     value={teacher.ptBasicHours}
                                     onChange={handlePtHoursChange}
                                     className="boss-pt-hours-input"
+                                    aria-label={`第 ${index + 1} 位師資非教學時數`}
                                 /> hr
                             </div>
                         )}
                     </div>
                 </div>
 
-                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn">
-                    <Trash2 className="icon-md" />
+                <button onClick={() => onRemove(teacher.id)} className="boss-delete-btn" aria-label={`刪除第 ${index + 1} 位師資`}>
+                    <Trash2 className="icon-md" aria-hidden="true" />
                 </button>
             </div>
 
             {/* Classes */}
             <div className="boss-teacher-classes">
-                {teacher.classList.map(cls => (
+                {teacher.classList.map((cls, classIndex) => (
                     <ClassConfig
                         key={cls.id}
+                        index={classIndex}
                         cls={cls}
                         teacherId={teacher.id}
                         teacherType={teacher.teacherType}
