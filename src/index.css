@@ -3,40 +3,42 @@
  * 使用 CSS 變數與模組化設計
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Nunito:wght@600;700;800;900&display=swap');
+
 /* === CSS 變數 === */
 :root {
   /* 色彩系統 */
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
+  --color-slate-50: #f3f0ec;
+  --color-slate-100: #e7e1da;
+  --color-slate-200: #d9d2c9;
+  --color-slate-300: #c8bfb3;
+  --color-slate-400: #8390a0;
+  --color-slate-500: #576475;
+  --color-slate-600: #465467;
+  --color-slate-700: #2d3949;
+  --color-slate-800: #263241;
+  --color-slate-900: #1f2a38;
 
-  --color-indigo-50: rgba(238, 242, 255, 0.2);
-  --color-indigo-100: #e0e7ff;
-  --color-indigo-500: #6366f1;
-  --color-indigo-600: #4f46e5;
-  --color-indigo-700: #4338ca;
-  --color-indigo-800: #3730a3;
+  --color-indigo-50: rgba(126, 156, 180, 0.1);
+  --color-indigo-100: rgba(126, 156, 180, 0.24);
+  --color-indigo-500: #7e9cb4;
+  --color-indigo-600: #6f8fa9;
+  --color-indigo-700: #536f89;
+  --color-indigo-800: #2d3949;
 
-  --color-amber-50: rgba(255, 251, 235, 0.5);
-  --color-amber-100: #fef3c7;
-  --color-amber-200: #fde68a;
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
-  --color-amber-700: #b45309;
-  --color-amber-900: #78350f;
+  --color-amber-50: rgba(140, 79, 79, 0.08);
+  --color-amber-100: rgba(140, 79, 79, 0.18);
+  --color-amber-200: rgba(140, 79, 79, 0.3);
+  --color-amber-500: #a76662;
+  --color-amber-600: #8c4f4f;
+  --color-amber-700: #743f42;
+  --color-amber-900: #4e2d31;
 
-  --color-emerald-50: rgba(236, 253, 245, 0.2);
-  --color-emerald-100: #d1fae5;
-  --color-emerald-500: #10b981;
-  --color-emerald-600: #059669;
-  --color-emerald-700: #047857;
+  --color-emerald-50: rgba(126, 156, 180, 0.1);
+  --color-emerald-100: rgba(126, 156, 180, 0.24);
+  --color-emerald-500: #7e9cb4;
+  --color-emerald-600: #6f8fa9;
+  --color-emerald-700: #536f89;
 
   --color-rose-50: #fff1f2;
   --color-rose-500: #f43f5e;
@@ -55,20 +57,20 @@
   /* 圓角 */
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
 
   /* 陰影 */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 8px 18px -16px rgb(45 57 73 / 0.45);
+  --shadow-lg: 0 16px 30px -22px rgb(45 57 73 / 0.55);
+  --shadow-xl: 0 22px 36px -24px rgb(45 57 73 / 0.55);
 
   /* 字體 */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Noto Sans TC', 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Nunito', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
 }
 
 /* === 基礎樣式 === */
@@ -80,7 +82,9 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-slate-50);
+  background:
+    radial-gradient(circle at top left, rgba(126, 156, 180, 0.18), transparent 28rem),
+    linear-gradient(180deg, #f9f7f4 0%, var(--color-slate-50) 42%, #eee8df 100%);
   color: var(--color-slate-800);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -99,6 +103,7 @@ h6 {
 .app-container {
   min-height: 100vh;
   padding-bottom: 5rem;
+  color: var(--color-slate-700);
 }
 
 @media (min-width: 640px) {
@@ -109,7 +114,9 @@ h6 {
 
 /* === 導覽列 === */
 .header {
-  background: white;
+  background: rgba(243, 240, 236, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-slate-200);
   position: sticky;
   top: 0;
@@ -118,9 +125,9 @@ h6 {
 }
 
 .header-content {
-  max-width: 56rem;
+  max-width: 72rem;
   margin: 0 auto;
-  padding: var(--spacing-3) var(--spacing-4);
+  padding: var(--spacing-3) var(--spacing-5);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
@@ -144,7 +151,7 @@ h6 {
 .header-title h1 {
   font-size: 1.125rem;
   font-weight: 900;
-  color: var(--color-slate-800);
+  color: var(--color-slate-700);
   letter-spacing: -0.025em;
 }
 
@@ -155,7 +162,7 @@ h6 {
 }
 
 .header-icon {
-  background: var(--color-indigo-600);
+  background: var(--color-slate-700);
   padding: var(--spacing-2);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
@@ -182,16 +189,16 @@ h6 {
 /* 模式切換 */
 .mode-toggle {
   display: flex;
-  background: var(--color-slate-100);
+  background: rgba(255, 255, 255, 0.62);
   padding: var(--spacing-1);
-  border-radius: var(--radius-xl);
+  border-radius: 9999px;
   border: 1px solid var(--color-slate-200);
   flex-shrink: 0;
 }
 
 .mode-btn {
   padding: var(--spacing-2) var(--spacing-3);
-  border-radius: var(--radius-lg);
+  border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 900;
   color: var(--color-slate-500);
@@ -229,9 +236,9 @@ h6 {
 
 .toolbar-btn {
   padding: var(--spacing-2);
-  background: white;
+  background: rgba(255, 255, 255, 0.78);
   border: 1px solid var(--color-slate-200);
-  border-radius: var(--radius-xl);
+  border-radius: 9999px;
   color: var(--color-slate-600);
   box-shadow: var(--shadow-sm);
   display: flex;
@@ -242,7 +249,8 @@ h6 {
 }
 
 .toolbar-btn:hover {
-  background: var(--color-slate-50);
+  background: white;
+  color: var(--color-slate-800);
 }
 
 .toolbar-btn-text {
@@ -259,9 +267,9 @@ h6 {
 
 /* === 主內容區 === */
 .main-content {
-  max-width: 56rem;
+  max-width: 72rem;
   margin: 0 auto;
-  padding: var(--spacing-6) var(--spacing-3);
+  padding: var(--spacing-8) var(--spacing-5);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-6);
@@ -302,7 +310,8 @@ h6 {
 }
 
 .dashboard-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
   padding: var(--spacing-5);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-sm);
@@ -319,7 +328,7 @@ h6 {
 .dashboard-label {
   font-size: 0.625rem;
   font-weight: 700;
-  color: var(--color-slate-400);
+  color: var(--color-slate-500);
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -334,7 +343,7 @@ h6 {
 .dashboard-number {
   font-size: 1.875rem;
   font-weight: 900;
-  color: var(--color-slate-700);
+  color: var(--color-slate-800);
 }
 
 @media (min-width: 640px) {
@@ -369,11 +378,11 @@ h6 {
 }
 
 .bg-indigo-gradient {
-  background: linear-gradient(to bottom right, var(--color-indigo-600), var(--color-indigo-800));
+  background: linear-gradient(135deg, var(--color-slate-700), var(--color-indigo-600));
 }
 
 .bg-amber-gradient {
-  background: linear-gradient(to bottom right, var(--color-amber-600), var(--color-amber-700));
+  background: linear-gradient(135deg, var(--color-amber-600), var(--color-slate-700));
 }
 
 .dashboard-highlight-content {
@@ -426,11 +435,12 @@ h6 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--spacing-1);
+  gap: var(--spacing-4);
+  padding: 0;
 }
 
 .config-title {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 900;
   color: var(--color-slate-700);
   display: flex;
@@ -450,7 +460,7 @@ h6 {
 }
 
 .add-class-btn {
-  background: var(--color-slate-900);
+  background: var(--color-slate-700);
   color: white;
   padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--radius-xl);
@@ -473,7 +483,8 @@ h6 {
 }
 
 .add-class-btn:hover:not(:disabled) {
-  background: black;
+  background: var(--color-slate-900);
+  transform: translateY(-1px);
 }
 
 .add-class-btn:disabled {
@@ -581,7 +592,7 @@ h6 {
 .class-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
+  gap: var(--spacing-5);
 }
 
 @media (min-width: 640px) {
@@ -592,7 +603,8 @@ h6 {
 
 /* === 班級卡片 === */
 .class-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
   border-radius: var(--radius-2xl);
   padding: var(--spacing-5);
   box-shadow: var(--shadow-sm);
@@ -609,7 +621,8 @@ h6 {
 }
 
 .class-card:hover {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
 }
 
 .class-card-header {
@@ -636,7 +649,7 @@ h6 {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--radius-xl);
-  background: var(--color-slate-50);
+  background: rgba(126, 156, 180, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -672,7 +685,7 @@ h6 {
   background: transparent;
   font-size: 1.125rem;
   font-weight: 900;
-  color: var(--color-slate-800);
+  color: var(--color-slate-700);
   border: none;
   padding: 0;
   cursor: pointer;
@@ -689,16 +702,16 @@ h6 {
 
 .frequency-toggle {
   display: flex;
-  background: var(--color-slate-100);
+  background: rgba(243, 240, 236, 0.8);
   padding: 2px;
-  border-radius: var(--radius-lg);
+  border-radius: 9999px;
   border: 1px solid var(--color-slate-200);
   flex-shrink: 0;
 }
 
 .frequency-btn {
   padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-md);
+  border-radius: 9999px;
   font-size: 0.625rem;
   font-weight: 900;
   color: var(--color-slate-400);
@@ -734,7 +747,7 @@ h6 {
 
 .stage-badge {
   padding: 2px var(--spacing-2);
-  border-radius: 4px;
+  border-radius: 9999px;
   font-size: 0.5625rem;
   font-weight: 900;
   border: 1px solid var(--color-slate-100);
@@ -870,7 +883,7 @@ h6 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--color-slate-50);
+  background: rgba(243, 240, 236, 0.72);
   padding: var(--spacing-3);
   border-radius: var(--radius-xl);
   border: 1px solid var(--color-slate-100);
@@ -1001,7 +1014,7 @@ h6 {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(243, 240, 236, 0.9);
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--color-slate-200);
   padding: var(--spacing-3);
