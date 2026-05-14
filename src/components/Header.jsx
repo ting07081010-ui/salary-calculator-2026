@@ -32,14 +32,18 @@ const Header = memo(({
 
                 <div className="header-controls">
                     {/* 模式切換 */}
-                    <div className="mode-toggle">
+                    <div className="mode-toggle" role="radiogroup" aria-label="教師類型切換">
                         <button
+                            role="radio"
+                            aria-checked={teacherType === TEACHER_TYPES.FULL_TIME}
                             onClick={() => setTeacherType(TEACHER_TYPES.FULL_TIME)}
                             className={`mode-btn ${teacherType === TEACHER_TYPES.FULL_TIME ? 'mode-btn-active-ft' : ''}`}
                         >
                             正職
                         </button>
                         <button
+                            role="radio"
+                            aria-checked={teacherType === TEACHER_TYPES.PT}
                             onClick={() => setTeacherType(TEACHER_TYPES.PT)}
                             className={`mode-btn ${teacherType === TEACHER_TYPES.PT ? 'mode-btn-active-pt' : ''}`}
                         >
