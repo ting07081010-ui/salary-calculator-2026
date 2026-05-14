@@ -83,11 +83,11 @@ const BossProfitDashboard = () => {
                                 ${fmt(financial.net)}
                             </p>
                         </div>
-                        <button onClick={exportCSV} className="boss-action-btn" title="匯出 CSV">
-                            <Download className="icon-md" />
+                        <button onClick={exportCSV} className="boss-action-btn" title="匯出 CSV" aria-label="匯出 CSV">
+                            <Download className="icon-md" aria-hidden="true" />
                         </button>
-                        <button onClick={printReport} className="boss-action-btn primary" title="列印 PDF">
-                            <Printer className="icon-md" />
+                        <button onClick={printReport} className="boss-action-btn primary" title="列印 PDF" aria-label="列印 PDF">
+                            <Printer className="icon-md" aria-hidden="true" />
                         </button>
                     </div>
                 </div>
