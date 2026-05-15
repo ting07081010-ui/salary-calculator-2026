@@ -31,6 +31,18 @@ const ClassConfig = memo(({
         onUpdate(teacherId, cls.id, 'count', e.target.value);
     }, [teacherId, cls.id, onUpdate]);
 
+    const incrementCount = useCallback(() => {
+        if (Number(cls.count) < cls.maxStudents) {
+            onUpdate(teacherId, cls.id, 'count', Number(cls.count) + 1);
+        }
+    }, [teacherId, cls.id, cls.count, cls.maxStudents, onUpdate]);
+
+    const decrementCount = useCallback(() => {
+        if (Number(cls.count) > 0) {
+            onUpdate(teacherId, cls.id, 'count', Number(cls.count) - 1);
+        }
+    }, [teacherId, cls.id, cls.count, onUpdate]);
+
     const handleHoursChange = useCallback((e) => {
         onUpdate(teacherId, cls.id, 'hours', e.target.value);
     }, [teacherId, cls.id, onUpdate]);
@@ -69,14 +81,35 @@ const ClassConfig = memo(({
                     <option value={10}>10人標準班</option>
                     <option value={15}>15人大型班</option>
                 </select>
-                <input
-                    type="range"
-                    min="0"
-                    max={cls.maxStudents}
-                    value={cls.count}
-                    onChange={handleCountChange}
-                    className="boss-class-slider"
-                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%' }}>
+                    <button
+                        type="button"
+                        onClick={decrementCount}
+                        disabled={Number(cls.count) <= 0}
+                        style={{ width: '1.5rem', height: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', background: '#1e293b', color: '#94a3b8', border: '1px solid #334155', cursor: Number(cls.count) <= 0 ? 'not-allowed' : 'pointer', flexShrink: 0, opacity: Number(cls.count) <= 0 ? 0.5 : 1, fontWeight: 'bold', fontSize: '0.75rem' }}
+                        aria-label={`減少學生人數`}
+                    >
+                        -
+                    </button>
+                    <input
+                        type="range"
+                        min="0"
+                        max={cls.maxStudents}
+                        value={cls.count}
+                        onChange={handleCountChange}
+                        className="boss-class-slider"
+                        style={{ flex: 1, margin: 0 }}
+                    />
+                    <button
+                        type="button"
+                        onClick={incrementCount}
+                        disabled={Number(cls.count) >= cls.maxStudents}
+                        style={{ width: '1.5rem', height: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '9999px', background: '#1e293b', color: '#94a3b8', border: '1px solid #334155', cursor: Number(cls.count) >= cls.maxStudents ? 'not-allowed' : 'pointer', flexShrink: 0, opacity: Number(cls.count) >= cls.maxStudents ? 0.5 : 1, fontWeight: 'bold', fontSize: '0.75rem' }}
+                        aria-label={`增加學生人數`}
+                    >
+                        +
+                    </button>
+                </div>
             </div>
 
             {/* PT hours input */}
