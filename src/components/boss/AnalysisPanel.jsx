@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { BarChart2 } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatters';
 import SVGCharts from './SVGCharts';
@@ -9,12 +9,12 @@ import SVGCharts from './SVGCharts';
 const AnalysisPanel = memo(({ financial, opsCosts }) => {
     const fmt = formatCurrency;
 
-    const perCapitaStats = [
+    const perCapitaStats = useMemo(() => [
         { label: '人均月產值', val: financial.totalStud > 0 ? financial.totalRev / financial.totalStud : 0, color: 'text-indigo' },
         { label: '人均薪資支', val: financial.totalStud > 0 ? financial.totalSal / financial.totalStud : 0, color: 'text-rose' },
         { label: '人均營運費', val: financial.totalStud > 0 ? financial.totalOps / financial.totalStud : 0, color: 'text-amber' },
         { label: '人均月淨利', val: financial.totalStud > 0 ? financial.net / financial.totalStud : 0, color: 'text-emerald' }
-    ];
+    ], [financial]);
 
     return (
         <div className="boss-analysis-panel">
