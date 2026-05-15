@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Timer } from 'lucide-react';
+import { Timer, Minus, Plus } from 'lucide-react';
 
 /**
  * PT 非教學時數輸入元件
@@ -7,6 +7,14 @@ import { Timer } from 'lucide-react';
 const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
     const handleChange = (e) => {
         setPtBasicHours(Math.max(0, Number(e.target.value)));
+    };
+
+    const handleDecrement = () => {
+        setPtBasicHours(Math.max(0, Number(ptBasicHours) - 1));
+    };
+
+    const handleIncrement = () => {
+        setPtBasicHours(Number(ptBasicHours) + 1);
     };
 
     return (
@@ -21,14 +29,32 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
                 </div>
             </div>
             <div className="pt-extra-input-wrapper">
+                <button
+                    type="button"
+                    onClick={handleDecrement}
+                    disabled={Number(ptBasicHours) <= 0}
+                    className="toolbar-btn"
+                    aria-label="減少非教學時數"
+                >
+                    <Minus className="icon-xs" aria-hidden="true" />
+                </button>
                 <input
                     type="number"
                     min="0"
                     value={ptBasicHours}
                     onChange={handleChange}
                     className="pt-extra-input"
+                    aria-label="非教學時數"
                 />
                 <span className="pt-extra-unit">HR</span>
+                <button
+                    type="button"
+                    onClick={handleIncrement}
+                    className="toolbar-btn"
+                    aria-label="增加非教學時數"
+                >
+                    <Plus className="icon-xs" aria-hidden="true" />
+                </button>
             </div>
         </section>
     );
