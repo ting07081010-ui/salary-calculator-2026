@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Trash2, User, Clock, TrendingUp } from 'lucide-react';
+import { Trash2, User, Clock, TrendingUp, Plus, Minus } from 'lucide-react';
 import { CLASS_TYPES, TEACHER_TYPES } from '../config/salaryConfig';
 import { formatCurrency } from '../utils/formatters';
 
@@ -28,6 +28,14 @@ const ClassCard = memo(({
     const handleHoursChange = useCallback((e) => {
         updateClass(cls.id, 'hours', e.target.value);
     }, [cls.id, updateClass]);
+
+    const incrementHours = useCallback(() => {
+        updateClass(cls.id, 'hours', Number(cls.hours) + 1);
+    }, [cls.id, cls.hours, updateClass]);
+
+    const decrementHours = useCallback(() => {
+        updateClass(cls.id, 'hours', Math.max(0, Number(cls.hours) - 1));
+    }, [cls.id, cls.hours, updateClass]);
 
     const handleFrequencyChange = useCallback((freq) => {
         updateClass(cls.id, 'frequency', freq);
@@ -122,16 +130,34 @@ const ClassCard = memo(({
                                 <span className="control-label">
                                     <Clock className="icon-xs" /> 授課時數
                                 </span>
-                                <div className="hours-input-wrapper">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={cls.hours}
-                                        onChange={handleHoursChange}
-                                        className="hours-input"
-                                        aria-label={`班級 ${index + 1} 每週時數`}
-                                    />
-                                    <span className="hours-unit">hr</span>
+                                <div className="hours-input-wrapper" style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
+                                    <button
+                                        type="button"
+                                        onClick={decrementHours}
+                                        aria-label={`減少班級 ${index + 1} 授課時數`}
+                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '4px', background: 'var(--color-slate-100)', color: 'var(--color-slate-600)', border: 'none', cursor: 'pointer' }}
+                                    >
+                                        <Minus className="icon-xs" aria-hidden="true" />
+                                    </button>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-1)' }}>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={cls.hours}
+                                            onChange={handleHoursChange}
+                                            className="hours-input"
+                                            aria-label={`班級 ${index + 1} 每週時數`}
+                                        />
+                                        <span className="hours-unit">hr</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={incrementHours}
+                                        aria-label={`增加班級 ${index + 1} 授課時數`}
+                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '4px', background: 'var(--color-slate-100)', color: 'var(--color-slate-600)', border: 'none', cursor: 'pointer' }}
+                                    >
+                                        <Plus className="icon-xs" aria-hidden="true" />
+                                    </button>
                                 </div>
                             </div>
                         )}
