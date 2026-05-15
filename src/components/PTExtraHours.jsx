@@ -21,6 +21,14 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
                 </div>
             </div>
             <div className="pt-extra-input-wrapper">
+                <button
+                    type="button"
+                    onClick={() => setPtBasicHours(Math.max(0, Number(ptBasicHours) - 1))}
+                    aria-label="減少非教學時數"
+                    className="text-amber-600 text-xl font-bold px-2 touch-manipulation"
+                >
+                    -
+                </button>
                 <input
                     type="number"
                     min="0"
@@ -28,6 +36,14 @@ const PTExtraHours = memo(({ ptBasicHours, setPtBasicHours }) => {
                     onChange={handleChange}
                     className="pt-extra-input"
                 />
+                <button
+                    type="button"
+                    onClick={() => setPtBasicHours(Math.max(0, Number(ptBasicHours) + 1))}
+                    aria-label="增加非教學時數"
+                    className="text-amber-600 text-xl font-bold px-2 touch-manipulation"
+                >
+                    +
+                </button>
                 <span className="pt-extra-unit">HR</span>
             </div>
         </section>
