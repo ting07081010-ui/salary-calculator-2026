@@ -26,11 +26,12 @@ const OpsCostConfig = memo(({
         <section className="boss-ops-section">
             <div className="boss-ops-header">
                 <h2 className="boss-ops-title">
-                    <Settings className="icon-sm" /> 營運成本核心參數
+                    <Settings className="icon-sm" aria-hidden="true" /> 營運成本核心參數
                 </h2>
                 <button
                     onClick={() => setShowConfig(!showConfig)}
                     className="boss-ops-toggle"
+                    aria-expanded={showConfig}
                 >
                     {showConfig ? '完成調整' : '展開參數調整'}
                 </button>

@@ -18,13 +18,14 @@ const SettingsSection = memo(({
             <button
                 className="admin-section-header"
                 onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
             >
                 <div className="admin-section-title">
-                    {Icon && <Icon className="icon-md" />}
+                    {Icon && <Icon className="icon-md" aria-hidden="true" />}
                     <span>{title}</span>
                     {badge && <span className="admin-section-badge">{badge}</span>}
                 </div>
-                {isOpen ? <ChevronDown className="icon-sm" /> : <ChevronRight className="icon-sm" />}
+                {isOpen ? <ChevronDown className="icon-sm" aria-hidden="true" /> : <ChevronRight className="icon-sm" aria-hidden="true" />}
             </button>
 
             {isOpen && (
