@@ -1,7 +1,3 @@
-# Palette's Journal
-
-A collection of critical UX and Accessibility learnings.
-
-## 2024-05-23 - Unique Labels in Lists
-**Learning:** Screen readers announce controls by their accessible name. In lists of identical items (like class cards), generic labels like "Delete" or "Hours" become ambiguous ("Delete what?").
-**Action:** Always append a unique identifier (like index or ID) to `aria-label` for controls in list items (e.g., "Delete Class 1").
+## 2024-05-18 - Icon-Only Button Accessibility in Dashboards
+**Learning:** Icon-only buttons (like Home, Export CSV, Print, or Delete actions) that rely solely on `title` attributes or have no labels at all create significant barriers for screen reader users. Furthermore, rendering the raw SVG icon without `aria-hidden="true"` can lead to redundant or confusing announcements.
+**Action:** When implementing or updating icon-only interactive elements (buttons or links), always apply an explicit and descriptive `aria-label` to the parent element, and add `aria-hidden="true"` to the inner SVG icon (e.g., from `lucide-react`). For items in lists (like a teacher card), include context in the label (e.g., `aria-label={"移除師資 " + teacher.name}`).
