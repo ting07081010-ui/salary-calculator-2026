@@ -101,6 +101,7 @@ const ClassConfig = memo(({
                 <button
                     onClick={() => onRemove(teacherId, cls.id)}
                     className="boss-remove-class-btn"
+                    aria-label={`刪除班級`}
                 >
                     Remove
                 </button>
