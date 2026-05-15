@@ -7,6 +7,7 @@ import { TEACHER_TYPES } from '../../config/bossConfig';
  */
 const ClassConfig = memo(({
     cls,
+    index,
     teacherId,
     teacherType,
     onUpdate,
@@ -64,6 +65,7 @@ const ClassConfig = memo(({
                     value={cls.type}
                     onChange={handleTypeChange}
                     className="boss-class-select"
+                    aria-label={`第 ${index + 1} 個班級類型`}
                 >
                     <option value={5}>5人精緻班</option>
                     <option value={10}>10人標準班</option>
@@ -76,6 +78,7 @@ const ClassConfig = memo(({
                     value={cls.count}
                     onChange={handleCountChange}
                     className="boss-class-slider"
+                    aria-label={`第 ${index + 1} 個班級學生人數`}
                 />
             </div>
 
@@ -101,6 +104,7 @@ const ClassConfig = memo(({
                 <button
                     onClick={() => onRemove(teacherId, cls.id)}
                     className="boss-remove-class-btn"
+                    aria-label={`移除第 ${index + 1} 個班級`}
                 >
                     Remove
                 </button>
