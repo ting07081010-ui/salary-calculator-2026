@@ -27,7 +27,6 @@ const PinGuard = ({ children, target }) => {
     const [lockoutRemaining, setLockoutRemaining] = useState(0);
 
     const {
-        CORRECT_PIN,
         PIN_HASH,
         PIN_LENGTH,
         MAX_ATTEMPTS,
@@ -133,16 +132,18 @@ const PinGuard = ({ children, target }) => {
     }, [isAuthenticated, STORAGE_KEY, TIMESTAMP_KEY, isSessionValid]);
 
     const verifyPin = useCallback(async (value) => {
-        if (PIN_HASH) {
-            if (!crypto?.subtle) {
-                console.warn('無法使用安全雜湊驗證 PIN，請確認瀏覽器環境');
-                return false;
-            }
-            const hashed = await hashPin(value);
-            return hashed === PIN_HASH;
+        if (!PIN_HASH) {
+            console.error('未設定安全雜湊 (PIN_HASH)，請在環境變數中設定。');
+            return false;
         }
-        return value === CORRECT_PIN;
-    }, [PIN_HASH, CORRECT_PIN]);
+
+        if (!crypto?.subtle) {
+            console.warn('無法使用安全雜湊驗證 PIN，請確認瀏覽器環境');
+            return false;
+        }
+        const hashed = await hashPin(value);
+        return hashed === PIN_HASH;
+    }, [PIN_HASH]);
 
     const handleUnlock = async (e) => {
         e.preventDefault();
@@ -202,10 +203,25 @@ const PinGuard = ({ children, target }) => {
                 </div>
 
                 <h2 className="text-2xl font-bold text-slate-800 mb-2">
-                    {isLocked ? '暫時鎖定' : '安全鎖定'}
+                    {!PIN_HASH ? '配置錯誤' : isLocked ? '暫時鎖定' : '安全鎖定'}
                 </h2>
 
-                {isLocked ? (
+                {!PIN_HASH ? (
+                    <div className="space-y-4">
+                        <div className="bg-rose-50 p-4 rounded-xl border border-rose-100">
+                            <AlertTriangle className="w-8 h-8 text-rose-600 mx-auto mb-2" />
+                            <p className="text-rose-800 font-bold text-sm">系統未配置安全金鑰</p>
+                            <p className="text-rose-600 text-xs mt-1">
+                                請設定 VITE_PIN_HASH 環境變數以啟用安全存取。
+                            </p>
+                        </div>
+                        <div className="pt-4 border-t border-slate-100">
+                            <a href="/" className="text-xs text-slate-400 hover:text-slate-600 font-bold">
+                                返回首頁
+                            </a>
+                        </div>
+                    </div>
+                ) : isLocked ? (
                     <div className="space-y-4">
                         <p className="text-slate-500 text-sm">
                             嘗試次數過多，請稍後再試。
