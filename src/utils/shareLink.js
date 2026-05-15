@@ -4,8 +4,8 @@ import {
     FREQUENCY_OPTIONS,
     MAX_CLASSES,
     TEACHER_TYPES
-} from '../config/salaryConfig';
-import { generateId } from './formatters';
+} from '../config/salaryConfig.js';
+import { generateId } from './formatters.js';
 
 const CLASS_TYPE_VALUES = new Set(CLASS_TYPES.map(({ value }) => value));
 const FREQUENCY_VALUES = new Set(Object.keys(FREQUENCY_OPTIONS));
