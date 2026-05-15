@@ -43,12 +43,16 @@ const ClassConfig = memo(({
                     <button
                         onClick={handleFrequencyToggle}
                         className={`boss-freq-btn ${cls.frequency === 'single' ? 'single' : ''}`}
+                        aria-pressed={cls.frequency === 'full'}
+                        aria-label={`師資 ${teacherId} 班級頻率`}
                     >
                         {cls.frequency === 'full' ? '全期 (1.0)' : '單日 (0.5)'}
                     </button>
                     <button
                         onClick={handleLevelToggle}
                         className={`boss-level-btn ${cls.level === 'advanced' ? 'advanced' : ''}`}
+                        aria-pressed={cls.level === 'advanced'}
+                        aria-label={`師資 ${teacherId} 班級級別`}
                     >
                         {cls.level === 'standard' ? '標準課程' : '進階課程'}
                     </button>
@@ -64,6 +68,7 @@ const ClassConfig = memo(({
                     value={cls.type}
                     onChange={handleTypeChange}
                     className="boss-class-select"
+                    aria-label={`師資 ${teacherId} 班級類型`}
                 >
                     <option value={5}>5人精緻班</option>
                     <option value={10}>10人標準班</option>
@@ -76,6 +81,7 @@ const ClassConfig = memo(({
                     value={cls.count}
                     onChange={handleCountChange}
                     className="boss-class-slider"
+                    aria-label={`師資 ${teacherId} 班級學生人數`}
                 />
             </div>
 
@@ -89,6 +95,7 @@ const ClassConfig = memo(({
                             value={cls.hours}
                             onChange={handleHoursChange}
                             className="boss-hours-input"
+                            aria-label={`師資 ${teacherId} 班級每月授課時數`}
                         /> hr
                     </span>
                     <span className="boss-hourly-rate">${cls.hourlyRate}/hr</span>
@@ -101,6 +108,7 @@ const ClassConfig = memo(({
                 <button
                     onClick={() => onRemove(teacherId, cls.id)}
                     className="boss-remove-class-btn"
+                    aria-label={`移除師資 ${teacherId} 的班級`}
                 >
                     Remove
                 </button>

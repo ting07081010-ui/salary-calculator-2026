@@ -31,6 +31,8 @@ const OpsCostConfig = memo(({
                 <button
                     onClick={() => setShowConfig(!showConfig)}
                     className="boss-ops-toggle"
+                    aria-expanded={showConfig}
+                    aria-label="展開或收合營運成本參數調整"
                 >
                     {showConfig ? '完成調整' : '展開參數調整'}
                 </button>
@@ -49,6 +51,7 @@ const OpsCostConfig = memo(({
                                 onChange={(e) => onUpdateCost(item.key, e.target.value)}
                                 className="boss-ops-input"
                                 placeholder="0"
+                                aria-label={item.label}
                             />
                         </div>
                     ))}
