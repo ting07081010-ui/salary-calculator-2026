@@ -59,8 +59,8 @@ const AdminSettingsPanel = () => {
             <header className="admin-header">
                 <div className="admin-header-content">
                     <div className="admin-header-title">
-                        <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center mr-2" title="回首頁">
-                            <Home className="icon-md" />
+                        <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center mr-2" title="回首頁" aria-label="回首頁">
+                            <Home className="icon-md" aria-hidden="true" />
                         </a>
                         <div className="admin-header-icon">
                             <Settings className="icon-md" />

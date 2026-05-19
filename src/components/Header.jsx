@@ -20,8 +20,8 @@ const Header = memo(({
         <header className="header">
             <div className="header-content">
                 <div className="header-title">
-                    <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center" title="回首頁">
-                        <Home className="icon-md" />
+                    <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center" title="回首頁" aria-label="回首頁">
+                        <Home className="icon-md" aria-hidden="true" />
                     </a>
                     <div className="w-px h-6 bg-slate-200 mx-2" />
                     <div className="header-icon">
@@ -50,17 +50,17 @@ const Header = memo(({
                     {/* 工具列 */}
                     <div className="toolbar">
                         <button onClick={copyShareLink} className="toolbar-btn" title="複製分享連結">
-                            {copySuccess ? <Check className="icon-sm text-emerald" /> : <LinkIcon className="icon-sm" />}
+                            {copySuccess ? <Check className="icon-sm text-emerald" aria-hidden="true" /> : <LinkIcon className="icon-sm" aria-hidden="true" />}
                             <span className="toolbar-btn-text">{copySuccess ? '已複製' : '分享'}</span>
                         </button>
-                        <button onClick={exportAsImage} disabled={isExporting} className="toolbar-btn" title="匯出圖片">
-                            <Camera className={`icon-sm ${isExporting ? 'animate-pulse' : ''}`} />
+                        <button onClick={exportAsImage} disabled={isExporting} className="toolbar-btn" title="匯出圖片" aria-label="匯出圖片" aria-busy={isExporting}>
+                            <Camera className={`icon-sm ${isExporting ? 'animate-pulse' : ''}`} aria-hidden="true" />
                         </button>
-                        <button onClick={exportToCSV} className="toolbar-btn" title="匯出 CSV">
-                            <Download className="icon-sm" />
+                        <button onClick={exportToCSV} className="toolbar-btn" title="匯出 CSV" aria-label="匯出 CSV">
+                            <Download className="icon-sm" aria-hidden="true" />
                         </button>
-                        <button onClick={printReport} className="toolbar-btn" title="列印">
-                            <Printer className="icon-sm" />
+                        <button onClick={printReport} className="toolbar-btn" title="列印" aria-label="列印">
+                            <Printer className="icon-sm" aria-hidden="true" />
                         </button>
                     </div>
                 </div>
