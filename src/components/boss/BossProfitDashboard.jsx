@@ -54,8 +54,8 @@ const BossProfitDashboard = () => {
             <header className="boss-header no-print">
                 <div className="boss-header-content">
                     <div className="boss-header-title">
-                        <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center mr-2" title="回首頁">
-                            <Home className="icon-md" />
+                        <a href="/" className="text-slate-400 hover:text-indigo-600 transition-colors flex items-center mr-2" title="回首頁" aria-label="回首頁">
+                            <Home className="icon-md" aria-hidden="true" />
                         </a>
                         <div className="boss-header-icon">
                             <Target className="icon-md" />
@@ -83,11 +83,11 @@ const BossProfitDashboard = () => {
                                 ${fmt(financial.net)}
                             </p>
                         </div>
-                        <button onClick={exportCSV} className="boss-action-btn" title="匯出 CSV">
-                            <Download className="icon-md" />
+                        <button onClick={exportCSV} className="boss-action-btn" title="匯出 CSV" aria-label="匯出 CSV">
+                            <Download className="icon-md" aria-hidden="true" />
                         </button>
-                        <button onClick={printReport} className="boss-action-btn primary" title="列印 PDF">
-                            <Printer className="icon-md" />
+                        <button onClick={printReport} className="boss-action-btn primary" title="列印 PDF" aria-label="列印 PDF">
+                            <Printer className="icon-md" aria-hidden="true" />
                         </button>
                     </div>
                 </div>
